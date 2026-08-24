@@ -4,12 +4,12 @@ excerpt: "A practical guide to extending Microsoft Foundry agents with web searc
 slug: microsoft-foundry/part2-tools-mcp-memory
 artifactPath: "Microsoft Foundry/part2-tools-mcp-memory"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents", "mcp", "toolbox", "memory"]
-series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":2}
+series: null
 publishAt: "2026-07-01T07:12:00.000Z"
 ---
 # Part 2 - Beyond the basics: MCP servers, tools, toolboxes, and memory in the Microsoft Foundry SDK
 
-In [Part 1 - Getting started with Microsoft Foundry SDK](./getting-started-azure-foundry-sdk.md) we created a Foundry resource, a project, deployed a model, and built our first **Prompt agent** with `PromptAgentDefinition`. That agent could chat — but it couldn't search the web, read your files, call your functions, or remember anything between conversations.
+In [Part 1 - Getting started with Microsoft Foundry SDK](/blog/microsoft-foundry/part1-getting-started) we created a Foundry resource, a project, deployed a model, and built our first **Prompt agent** with `PromptAgentDefinition`. That agent could chat — but it couldn't search the web, read your files, call your functions, or remember anything between conversations.
 
 This post is the "rest of the SDK": a rundown of the tool-related API calls Foundry Agent Service supports, shown as small, runnable snippets in **increasing order of complexity**:
 
