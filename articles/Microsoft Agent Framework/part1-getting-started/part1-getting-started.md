@@ -1,10 +1,10 @@
 ---
-title: "Microsoft Agent Framework - Getting Started"
+title: "Microsoft Agent Framework - Part 1: Getting Started"
 excerpt: "If you've built AI agents on Microsoft's stack over the last couple of years, you've probably touched **Semantic Kernel** (structured, enterprise-grade orchestration) or **AutoGen** (Microsoft Research's experimental mul…"
 slug: microsoft-agent-framework/part1-getting-started
 artifactPath: "Microsoft Agent Framework/part1-getting-started"
 tags: ["microsoft-agent-framework", "python", "ai-agents", "semantic-kernel", "getting-started"]
-series: null
+series: {"slug":"microsoft-agent-framework","title":"Microsoft Agent Framework","part":1}
 publishAt: "2026-07-23T22:58:00.000Z"
 ---
 # Getting Started with Microsoft Agent Framework
