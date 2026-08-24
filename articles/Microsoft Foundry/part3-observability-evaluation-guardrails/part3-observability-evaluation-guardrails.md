@@ -4,12 +4,12 @@ excerpt: "Learn how to make Microsoft Foundry agents trustworthy with tracing, e
 slug: microsoft-foundry/part3-observability-evaluation-guardrails
 artifactPath: "Microsoft Foundry/part3-observability-evaluation-guardrails"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents", "observability", "tracing", "evaluation", "guardrails", "responsible-ai"]
-series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":3}
+series: null
 publishAt: "2026-07-06T18:01:00.000Z"
 ---
 # Part 3 - Trust but verify: observability, evaluations, and guardrails in the Microsoft Foundry SDK
 
-Parts [1](./getting-started-azure-foundry-sdk.md) and [2](./azure-foundry-sdk-tools-mcp-memory.md) of this series built agents and gave them capabilities — web search, file search, functions, MCP, toolboxes, memory. Shipping an agent to real users raises a different set of questions:
+Parts [1](/blog/microsoft-foundry/part1-getting-started) and [2](/blog/microsoft-foundry/part2-tools-mcp-memory) of this series built agents and gave them capabilities — web search, file search, functions, MCP, toolboxes, memory. Shipping an agent to real users raises a different set of questions:
 
 - **Where did this response come from?** Which model call, which tool, which step introduced the error or the latency spike?
 - **Is it actually any good?** Does it complete tasks, stay grounded, avoid making things up?
