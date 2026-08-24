@@ -9,7 +9,7 @@ publishAt: "2026-07-29T09:34:00.000Z"
 ---
 # Microsoft Agent Framework, Part 3: Orchestrating Multiple Agents
 
-In [Part 1](../part1-getting-started/microsoft-agent-framework-part1-getting-started.md) we built a single agent with a tool, and [Part 2](../part2-tools-and-structured-data/microsoft-agent-framework-part2-tools-and-structured-data.md) made its tool and data contracts more useful. This post introduces the **workflow engine**: a graph-based way to connect specialized agents so they collaborate instead of each trying to do everything.
+In [Part 1](/blog/microsoft-agent-framework/part1-getting-started) we built a single agent with a tool, and [Part 2](/blog/microsoft-agent-framework/part2-tools-and-structured-data) made its tool and data contracts more useful. This post introduces the **workflow engine**: a graph-based way to connect specialized agents so they collaborate instead of each trying to do everything.
 
 This post builds two multi-agent patterns step by step:
 
