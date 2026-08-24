@@ -302,7 +302,7 @@ Everything downstream — `Agent(...)`, `tools=[...]`, `agent.run(...)` — stay
 
 1. **Swap providers** — point the same `Agent` code at Azure OpenAI or Azure AI Foundry by changing only the chat client (`azure_endpoint` + `AzureCliCredential`), no other code changes needed.
 2. **Add more tools** — expose a database lookup, an internal API, or a calculator, and watch the model choose between them.
-3. **Multiple tools and structured data** — [Part 2](../part2-tools-and-structured-data/microsoft-agent-framework-part2-tools-and-structured-data.md) shows how to build useful tool contracts and typed results.
+3. **Multiple tools and structured data** — [Part 2](/blog/microsoft-agent-framework/part2-tools-and-structured-data) shows how to build useful tool contracts and typed results.
 4. **Multi-agent workflows** — [Part 3](../part3-orchestration/microsoft-agent-framework-part3-orchestration.md) covers sequential and concurrent orchestration, followed by adaptive patterns in Part 4.
 4. **MCP tools** — connect an agent to an existing Model Context Protocol server instead of writing Python tools by hand.
 5. **Migrate an existing Semantic Kernel agent** — Microsoft publishes a dedicated Semantic Kernel → Agent Framework migration guide since the concepts map closely.
