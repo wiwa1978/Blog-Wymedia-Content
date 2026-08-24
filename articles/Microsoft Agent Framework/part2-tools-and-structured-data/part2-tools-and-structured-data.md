@@ -9,7 +9,7 @@ publishAt: "2026-07-25T18:57:00.000Z"
 ---
 # Microsoft Agent Framework, Part 2: Multiple Tools and Structured Data
 
-In [Part 1](../part1-getting-started/microsoft-agent-framework-part1-getting-started.md) we created a single agent and gave it one tool. This post makes that agent useful in an application: it can choose between several tools, accept validated structured input, and return a typed result that the rest of the application can trust.
+In [Part 1](/blog/microsoft-agent-framework/part1-getting-started) we created a single agent and gave it one tool. This post makes that agent useful in an application: it can choose between several tools, accept validated structured input, and return a typed result that the rest of the application can trust.
 
 The example is an **Azure solution-planning assistant**. It answers a request by selecting from a service catalog, checking regional availability, and estimating a rough monthly cost. The numbers are deliberately mock data; the design is the important part.
 
