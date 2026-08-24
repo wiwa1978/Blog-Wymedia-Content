@@ -289,7 +289,7 @@ A `SequentialBuilder` can take another workflow (like the `review_stage` concurr
 4. **Human-in-the-loop** — pause the pipeline before a sensitive tool call (e.g. `DeployToProduction`) and require explicit approval before the workflow continues.
 5. **Checkpoints** — persist workflow state so a long-running multi-agent job can resume after a crash or restart.
 
-The more adaptive patterns are covered in [Part 4](../part4-advanced-orchestration/microsoft-agent-framework-part4-advanced-orchestration.md).
+
 
 ## Why this matters
 
