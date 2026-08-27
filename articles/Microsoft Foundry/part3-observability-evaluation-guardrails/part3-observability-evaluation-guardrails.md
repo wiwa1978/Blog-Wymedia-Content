@@ -1,5 +1,5 @@
 ---
-title: "Trust but verify: observability, evaluations, and guardrails"
+title: "Observability, evaluations, and guardrails"
 excerpt: "Learn how to make Microsoft Foundry agents trustworthy with tracing, evaluations, and guardrails backed by practical Python examples."
 slug: microsoft-foundry/part3-observability-evaluation-guardrails
 artifactPath: "Microsoft Foundry/part3-observability-evaluation-guardrails"
