@@ -1,10 +1,10 @@
 ---
-title: "Microsoft Agent Framework, Part 2: Multiple Tools and Structured Data"
+title: "Multiple Tools and Structured Data"
 excerpt: "In [Part 1](../part1-getting-started/microsoft-agent-framework-part1-getting-started.md) we created a single agent and gave it one tool. This post makes that agent useful in an application: it can choose between several…"
 slug: microsoft-agent-framework/part2-tools-and-structured-data
 artifactPath: "Microsoft Agent Framework/part2-tools-and-structured-data"
 tags: ["microsoft-agent-framework", "python", "ai-agents", "tools", "structured-output"]
-series: null
+series: {"slug":"microsoft-agent-framework","title":"Microsoft Agent Framework","part":2}
 publishAt: "2026-07-25T18:57:00.000Z"
 ---
 # Microsoft Agent Framework, Part 2: Multiple Tools and Structured Data
