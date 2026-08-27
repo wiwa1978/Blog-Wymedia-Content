@@ -1,5 +1,5 @@
 ---
-title: "Beyond the basics: MCP servers, tools, toolboxes, and memory"
+title: "MCP servers, tools, toolboxes, and memory"
 excerpt: "A practical guide to extending Microsoft Foundry agents with web search, file search, custom functions, MCP, toolboxes, and persistent memory."
 slug: microsoft-foundry/part2-tools-mcp-memory
 artifactPath: "Microsoft Foundry/part2-tools-mcp-memory"
