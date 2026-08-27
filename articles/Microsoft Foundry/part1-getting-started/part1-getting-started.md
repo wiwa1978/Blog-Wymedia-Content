@@ -1,5 +1,5 @@
 ---
-title: "Part 1 - Getting Started"
+title: "Getting Started"
 excerpt: "A practical Python walkthrough for creating Microsoft Foundry resources and projects, deploying a model, and building your first agent."
 slug: microsoft-foundry/part1-getting-started
 artifactPath: "Microsoft Foundry/part1-getting-started"
