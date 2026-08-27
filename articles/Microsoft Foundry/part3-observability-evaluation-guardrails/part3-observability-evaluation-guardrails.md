@@ -1,10 +1,10 @@
 ---
-title: "Microsoft Foundry SDK - Part 3 - Trust but verify: observability, evaluations, and guardrails"
+title: "Trust but verify: observability, evaluations, and guardrails"
 excerpt: "Learn how to make Microsoft Foundry agents trustworthy with tracing, evaluations, and guardrails backed by practical Python examples."
 slug: microsoft-foundry/part3-observability-evaluation-guardrails
 artifactPath: "Microsoft Foundry/part3-observability-evaluation-guardrails"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents", "observability", "tracing", "evaluation", "guardrails", "responsible-ai"]
-series: null
+series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":3}
 publishAt: "2026-07-06T18:01:00.000Z"
 ---
 # Part 3 - Trust but verify: observability, evaluations, and guardrails in the Microsoft Foundry SDK
