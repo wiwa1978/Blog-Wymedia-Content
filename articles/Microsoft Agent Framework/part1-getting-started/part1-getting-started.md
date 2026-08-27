@@ -1,5 +1,5 @@
 ---
-title: "Microsoft Agent Framework - Part 1: Getting Started"
+title: "Getting Started"
 excerpt: "If you've built AI agents on Microsoft's stack over the last couple of years, you've probably touched **Semantic Kernel** (structured, enterprise-grade orchestration) or **AutoGen** (Microsoft Research's experimental mul…"
 slug: microsoft-agent-framework/part1-getting-started
 artifactPath: "Microsoft Agent Framework/part1-getting-started"
