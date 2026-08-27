@@ -1,10 +1,10 @@
 ---
-title: "Microsoft Agent Framework - Part 3: Orchestrating Multiple Agents"
+title: "Orchestrating Multiple Agents"
 excerpt: "In [Part 1](../part1-getting-started/microsoft-agent-framework-part1-getting-started.md) we built a single agent with a tool, and [Part 2](../part2-tools-and-structured-data/microsoft-agent-framework-part2-tools-and-stru…"
 slug: microsoft-agent-framework/part3-orchestration
 artifactPath: "Microsoft Agent Framework/part3-orchestration"
 tags: ["microsoft-agent-framework", "python", "ai-agents", "multi-agent", "orchestration", "workflows"]
-series: null
+series: {"slug":"microsoft-agent-framework","title":"Microsoft Agent Framework","part":3}
 publishAt: "2026-07-29T09:34:00.000Z"
 ---
 # Microsoft Agent Framework, Part 3: Orchestrating Multiple Agents
