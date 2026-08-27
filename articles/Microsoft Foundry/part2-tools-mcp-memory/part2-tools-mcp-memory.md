@@ -1,10 +1,10 @@
 ---
-title: "Microsoft Foundry SDK - Part 2 - Beyond the basics: MCP servers, tools, toolboxes, and memory"
+title: "Beyond the basics: MCP servers, tools, toolboxes, and memory"
 excerpt: "A practical guide to extending Microsoft Foundry agents with web search, file search, custom functions, MCP, toolboxes, and persistent memory."
 slug: microsoft-foundry/part2-tools-mcp-memory
 artifactPath: "Microsoft Foundry/part2-tools-mcp-memory"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents", "mcp", "toolbox", "memory"]
-series: null
+series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":2}
 publishAt: "2026-07-01T07:12:00.000Z"
 ---
 # Part 2 - Beyond the basics: MCP servers, tools, toolboxes, and memory in the Microsoft Foundry SDK
