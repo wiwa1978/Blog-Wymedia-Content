@@ -1,5 +1,5 @@
 ---
-title: "Microsoft Foundry SDK: Part 6 – From Notebook to Production"
+title: "From Notebook to Production"
 excerpt: "Move Microsoft Foundry agents from notebooks to reliable production operations with versioning, environment promotion, safe rollouts, and guardrails."
 slug: microsoft-foundry/part6-from-notebook-to-production
 artifactPath: "Microsoft Foundry/part6-from-notebook-to-production"
