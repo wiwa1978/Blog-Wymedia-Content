@@ -173,26 +173,66 @@ print(f"Provisioning:   {project.properties.provisioning_state}")
 
 ## Step 6 — Deploy a model
 
-Deployments (and connections) are managed data-plane resources on your project rather than the management-plane SDK, so the fastest path here is the Azure CLI — then you read the result back with the Python SDK in the next step.
+Deployments are a management-plane resource too — the same `CognitiveServicesManagementClient` you used to create the resource and project also creates model deployments, via `client.deployments.begin_create_or_update()`.
 
-```bash
-az cognitiveservices account deployment create \
-    --name my-foundry-resource \
-    --resource-group my-foundry-rg \
-    --deployment-name gpt-5.1-mini \
-    --model-name gpt-5.1-mini \
-    --model-version "2025-04-14" \
-    --model-format OpenAI \
-    --sku-capacity 10 \
-    --sku-name Standard
+```python
+# 05_deploy_model.py
+import os
+from azure.identity import DefaultAzureCredential
+from azure.mgmt.cognitiveservices import CognitiveServicesManagementClient
+from azure.mgmt.cognitiveservices.models import Deployment, DeploymentProperties, DeploymentModel, Sku
+
+subscription_id = "<your-subscription-id>"
+resource_group_name = "my-foundry-rg"
+foundry_resource_name = "my-foundry-resource"
+MODEL_DEPLOYMENT = os.getenv("MODEL_DEPLOYMENT", "gpt-5.1-mini")
+MODEL_VERSION = os.getenv("MODEL_VERSION", "2025-04-14")
+MODEL_SKU_NAME = os.getenv("MODEL_SKU_NAME", "GlobalStandard")
+MODEL_SKU_CAPACITY = int(os.getenv("MODEL_SKU_CAPACITY", "10"))
+
+client = CognitiveServicesManagementClient(
+    credential=DefaultAzureCredential(),
+    subscription_id=subscription_id,
+    api_version="2025-04-01-preview",
+)
+
+deployment = client.deployments.begin_create_or_update(
+    resource_group_name=resource_group_name,
+    account_name=foundry_resource_name,
+    deployment_name=MODEL_DEPLOYMENT,
+    deployment=Deployment(
+        sku=Sku(name=MODEL_SKU_NAME, capacity=MODEL_SKU_CAPACITY),
+        properties=DeploymentProperties(
+            model=DeploymentModel(format="OpenAI", name=MODEL_DEPLOYMENT, version=MODEL_VERSION),
+        ),
+    ),
+).result()
+
+print(f"✓ Model deployed: {deployment.name}")
+print(f"  Model:              {deployment.properties.model.name} ({deployment.properties.model.version})")
+print(f"  SKU:                {deployment.sku.name} x{deployment.sku.capacity}")
+print(f"  Provisioning state: {deployment.properties.provisioning_state}")
 ```
+
+> 💡 Same idea as CLI's `az cognitiveservices account deployment create` — `sku.name` is the capacity type (`GlobalStandard`, `Standard`, `DataZoneStandard`, ...) and `sku.capacity` is the throughput unit count. `begin_create_or_update()` is a long-running operation, so `.result()` blocks until the deployment is ready.
 
 ## Step 7 — List what's deployed and connected
 
 Now switch to the **`AIProjectClient`** (`azure-ai-projects`) — the client for working *inside* a project: models, connections, agents, evaluations, files, and more.
 
+> ⚠️ **First time hitting the data plane?** If you created your resource/project via the SDK or CLI (as in Steps 3-4) rather than the Foundry portal UI, your user identity is **not** automatically granted data-plane access — you'll get `PermissionDenied: Principal does not have access to API/Operation.` Fix it by assigning yourself the **Foundry User** role (previously named **Azure AI User** — some tenants may still show the old name) on the Foundry resource:
+>
+> ```bash
+> az role assignment create \
+>     --assignee "<your-user-or-object-id>" \
+>     --role "Foundry User" \
+>     --scope "/subscriptions/<subscription-id>/resourceGroups/my-foundry-rg/providers/Microsoft.CognitiveServices/accounts/my-foundry-resource"
+> ```
+>
+> Get `<your-user-or-object-id>` by running `az ad signed-in-user show --query id -o tsv` (this is your Entra object ID — works for the `--assignee` flag regardless of whether you signed in with a user account or a service principal). Role assignments can take a minute or two to propagate — retry after a short wait if you still see the error.
+
 ```python
-# 05_inspect_project.py
+# 06_inspect_project.py
 import os
 from azure.identity import DefaultAzureCredential
 from azure.ai.projects import AIProjectClient
@@ -220,7 +260,7 @@ with (
 This is the core building block of any AI app: send input, get a response.
 
 ```python
-# 06_chat.py
+# 07_chat.py
 import os
 from azure.identity import DefaultAzureCredential
 from azure.ai.projects import AIProjectClient
@@ -245,7 +285,7 @@ print(f"Response output: {response.output_text}")
 An agent packages a model + instructions into a reusable, versioned identity so you don't have to repeat the system prompt every call.
 
 ```python
-# 07_create_agent.py
+# 08_create_agent.py
 import os
 from azure.identity import DefaultAzureCredential
 from azure.ai.projects import AIProjectClient
@@ -356,14 +396,20 @@ Foundry separates the *management-plane* concern (the resource and project — c
 
 ## Full Sample Code
 
-The complete working example for this post is available on GitHub:
+Every snippet in this post is available as a standalone, runnable script in the [`code/`](code/) folder — numbered to match the steps above, plus the combined quickstart and cleanup scripts:
 
-**[part1_getting_started.py](code/part1_getting_started.py)**
+- [`01_verify_auth.py`](code/01_verify_auth.py)
+- [`02_create_foundry_resource.py`](code/02_create_foundry_resource.py)
+- [`03_create_project.py`](code/03_create_project.py)
+- [`04_get_project.py`](code/04_get_project.py)
+- [`05_deploy_model.py`](code/05_deploy_model.py)
+- [`06_inspect_project.py`](code/06_inspect_project.py)
+- [`07_chat.py`](code/07_chat.py)
+- [`08_create_agent.py`](code/08_create_agent.py)
+- [`full_example.py`](code/full_example.py)
+- [`cleanup.py`](code/cleanup.py)
 
-Run it locally:
-```bash
-python part1_getting_started.py
-```
+See [`code/README.md`](code/README.md) for setup and run instructions. Copy [`code/.env.example`](code/.env.example) to `.env` and fill in your values before running any script.
 
 ---
 
