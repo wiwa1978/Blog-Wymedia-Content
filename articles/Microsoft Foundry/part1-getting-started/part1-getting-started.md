@@ -312,39 +312,12 @@ print(f"  Version: {agent.version}")
 
 ## Putting it all together
 
-A single script that goes from an authenticated session to a running chat call — useful as a smoke test after creating a new resource.
-
-```python
-# foundry_quickstart.py
-import os
-from azure.identity import DefaultAzureCredential
-from azure.ai.projects import AIProjectClient
-
-PROJECT_ENDPOINT = os.environ["AZURE_AI_PROJECT_ENDPOINT"]
-MODEL_DEPLOYMENT = os.environ.get("MODEL_DEPLOYMENT", "gpt-5.1-mini")
-
-with (
-    DefaultAzureCredential() as credential,
-    AIProjectClient(endpoint=PROJECT_ENDPOINT, credential=credential) as project_client,
-):
-    print("== Deployed models ==")
-    for d in project_client.deployments.list():
-        print(f"  - {d.name}")
-
-    print("\n== Chat test ==")
-    openai_client = project_client.get_openai_client()
-    response = openai_client.responses.create(
-        model=MODEL_DEPLOYMENT,
-        input="In one sentence, what is Microsoft Foundry?",
-    )
-    print(response.output_text)
-```
+The complete end-to-end script for this part is [`full_example.py`](code/full_example.py). It combines all steps (auth check, resource/project creation, model deployment, deployment inspection, chat test, and agent creation) and reads settings from `.env`.
 
 Run it:
 
 ```bash
-set AZURE_AI_PROJECT_ENDPOINT=https://my-foundry-resource.services.ai.azure.com/api/projects/my-foundry-project
-python foundry_quickstart.py
+python full_example.py
 ```
 
 ## Cleaning up
