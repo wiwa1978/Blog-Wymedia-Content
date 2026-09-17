@@ -33,6 +33,7 @@ resource = client.accounts.begin_create(
         "properties": {
             "allowProjectManagement": True,
             "customSubDomainName": foundry_resource_name,
+            "publicNetworkAccess": "Enabled",
         },
     },
 )

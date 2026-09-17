@@ -3,7 +3,7 @@ title: "Getting Started"
 excerpt: "A practical Python walkthrough for creating Microsoft Foundry resources and projects, deploying a model, and building your first agent."
 slug: microsoft-foundry/part1-getting-started
 artifactPath: "Microsoft Foundry/part1-getting-started"
-tags: ["azure", "ai-foundry", "python", "sdk", "getting-started"]
+tags: []
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":1}
 publishAt: "2026-06-26T12:57:00.000Z"
 ---
