@@ -1,0 +1,6 @@
+order_id,customer,product,quantity,total
+1001,Contoso,Laptop,2,1999.98
+1002,Fabrikam,Mouse,10,299.90
+1003,Northwind,Monitor,4,1199.96
+1004,Adventure Works,Keyboard,6,479.94
+1005,Contoso,Headphones,3,449.97
