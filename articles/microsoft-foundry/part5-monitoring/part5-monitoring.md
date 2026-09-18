@@ -1,5 +1,5 @@
 ---
-title: "Microsoft Foundry SDK: Monitoring agents"
+title: "Monitoring agents"
 excerpt: "Instrument Microsoft Foundry agents with traces, latency, token, and tool-call telemetry using OpenTelemetry and Application Insights."
 slug: microsoft-foundry/part5-monitoring
 artifactPath: "microsoft-foundry/part5-monitoring"
