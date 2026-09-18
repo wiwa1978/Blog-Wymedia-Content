@@ -5,7 +5,7 @@ slug: microsoft-foundry/part6-evaluations
 artifactPath: "microsoft-foundry/part6-evaluations"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents", "evaluation", "quality"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":6}
-publishAt: null
+publishAt: "2026-07-25T14:00:00.000Z"
 ---
 # Part 6 – Evaluate Microsoft Foundry agents with real datasets
 
