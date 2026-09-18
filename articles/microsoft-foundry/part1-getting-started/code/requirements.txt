@@ -1,0 +1,4 @@
+azure-ai-projects>=2.3.0
+azure-identity
+azure-mgmt-cognitiveservices~=13.7.0
+python-dotenv
