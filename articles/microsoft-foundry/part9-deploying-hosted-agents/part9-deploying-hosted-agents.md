@@ -5,7 +5,7 @@ slug: microsoft-foundry/part9-deploying-hosted-agents
 artifactPath: "microsoft-foundry/part9-deploying-hosted-agents"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":9}
-publishAt: "2026-07-20T09:04:00.000Z"
+publishAt: "2026-08-23T09:04:00.000Z"
 ---
 # Microsoft Foundry SDK: Part 9 – Deploying Hosted Agents
 
