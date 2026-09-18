@@ -1,11 +1,11 @@
 ---
-title: "Foundry IQ and RAG"
-excerpt: "Build a retrieval-augmented generation pipeline from a PDF with Azure AI Search, Foundry IQ, and Microsoft Foundry Agent Service."
+title: "Foundry IQ with one document"
+excerpt: "Build a retrieval-augmented generation pipeline from one PDF with Azure AI Search, Foundry IQ, and Microsoft Foundry Agent Service."
 slug: microsoft-foundry/part3-foundryiq-rag
 artifactPath: "microsoft-foundry/part3-foundryiq-rag"
-tags: []
+tags: ["azure", "ai-foundry", "foundry-iq", "rag", "azure-ai-search", "python", "agents", "mcp"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":3}
-publishAt: "2026-09-18T10:10:00.000Z"
+publishAt: "2026-07-07T10:10:00.000Z"
 ---
 # Part 3 - Foundry IQ with one document
 
