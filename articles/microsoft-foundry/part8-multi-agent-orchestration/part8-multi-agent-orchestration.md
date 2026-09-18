@@ -5,7 +5,7 @@ slug: microsoft-foundry/part8-multi-agent-orchestration
 artifactPath: "microsoft-foundry/part8-multi-agent-orchestration"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":8}
-publishAt: "2026-08-13T16:02:00.000Z"
+publishAt: "2026-08-05T16:02:00.000Z"
 ---
 # Microsoft Foundry SDK: Part 8 – Multi-Agent Orchestration
 
