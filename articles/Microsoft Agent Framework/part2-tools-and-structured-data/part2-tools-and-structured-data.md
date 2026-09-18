@@ -5,7 +5,7 @@ slug: microsoft-agent-framework/part2-tools-and-structured-data
 artifactPath: "Microsoft Agent Framework/part2-tools-and-structured-data"
 tags: ["microsoft-agent-framework", "python", "ai-agents", "tools", "structured-output"]
 series: {"slug":"microsoft-agent-framework","title":"Microsoft Agent Framework","part":2}
-publishAt: "2026-07-25T18:57:00.000Z"
+publishAt: "2026-08-25T18:57:00.000Z"
 ---
 # Microsoft Agent Framework, Part 2: Multiple Tools and Structured Data
 
