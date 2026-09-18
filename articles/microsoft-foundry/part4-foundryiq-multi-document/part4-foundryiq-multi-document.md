@@ -3,9 +3,9 @@ title: "Foundry IQ with multiple documents"
 excerpt: "Extend a Foundry IQ RAG pipeline to multiple PDFs with token-aware chunking, document identity, and document-level access control."
 slug: microsoft-foundry/part4-foundryiq-multi-document
 artifactPath: "microsoft-foundry/part4-foundryiq-multi-document"
-tags: ["azure", "ai-foundry", "foundry-iq", "rag", "azure-ai-search", "python", "agents", "security"]
+tags: []
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":4}
-publishAt: null
+publishAt: "2026-09-18T10:18:00.000Z"
 ---
 # Part 4 - Foundry IQ with multiple documents
 
