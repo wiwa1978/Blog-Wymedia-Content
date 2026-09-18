@@ -1,5 +1,5 @@
 ---
-title: "Microsoft Foundry SDK: Part 9 – Deploying Hosted Agents"
+title: "Deploying Hosted Agents"
 excerpt: "Deploy scalable Microsoft Foundry hosted agents using source packages, containers, Azure Container Registry, and Azure Developer CLI."
 slug: microsoft-foundry/part9-deploying-hosted-agents
 artifactPath: "microsoft-foundry/part9-deploying-hosted-agents"
