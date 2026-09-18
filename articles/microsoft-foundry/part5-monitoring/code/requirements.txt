@@ -1,0 +1,9 @@
+azure-ai-projects>=2.4.0
+azure-identity
+azure-mgmt-applicationinsights
+azure-mgmt-loganalytics
+openai
+python-dotenv
+opentelemetry-sdk
+azure-monitor-opentelemetry
+azure-monitor-query
