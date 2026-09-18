@@ -5,7 +5,7 @@ slug: microsoft-agent-framework/part1-getting-started
 artifactPath: "Microsoft Agent Framework/part1-getting-started"
 tags: ["microsoft-agent-framework", "python", "ai-agents", "semantic-kernel", "getting-started"]
 series: {"slug":"microsoft-agent-framework","title":"Microsoft Agent Framework","part":1}
-publishAt: "2026-07-23T22:58:00.000Z"
+publishAt: "2026-08-24T22:58:00.000Z"
 ---
 # Getting Started with Microsoft Agent Framework
 
