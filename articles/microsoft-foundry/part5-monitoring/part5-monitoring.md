@@ -1,11 +1,11 @@
 ---
-title: "Microsoft Foundry SDK: Part 5 – Monitoring agents"
+title: "Microsoft Foundry SDK: Monitoring agents"
 excerpt: "Instrument Microsoft Foundry agents with traces, latency, token, and tool-call telemetry using OpenTelemetry and Application Insights."
 slug: microsoft-foundry/part5-monitoring
 artifactPath: "microsoft-foundry/part5-monitoring"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents", "observability", "tracing"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":5}
-publishAt: "2026-07-06T18:01:00.000Z"
+publishAt: "2026-07-13T18:01:00.000Z"
 ---
 # Part 5 – Monitor Microsoft Foundry agents with traces and telemetry
 
