@@ -3,7 +3,7 @@ title: "From Notebook to Production"
 excerpt: "Move Microsoft Foundry agents from notebooks to reliable production operations with versioning, environment promotion, safe rollouts, and guardrails."
 slug: microsoft-foundry/part10-from-notebook-to-production
 artifactPath: "microsoft-foundry/part10-from-notebook-to-production"
-tags: []
+tags: ["azure", "ai-foundry", "sdk", "python", "agents"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":10}
 publishAt: "2026-07-22T15:55:00.000Z"
 ---
