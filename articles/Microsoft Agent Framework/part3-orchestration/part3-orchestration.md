@@ -5,7 +5,7 @@ slug: microsoft-agent-framework/part3-orchestration
 artifactPath: "Microsoft Agent Framework/part3-orchestration"
 tags: ["microsoft-agent-framework", "python", "ai-agents", "multi-agent", "orchestration", "workflows"]
 series: {"slug":"microsoft-agent-framework","title":"Microsoft Agent Framework","part":3}
-publishAt: "2026-07-29T09:34:00.000Z"
+publishAt: "2026-08-26T09:34:00.000Z"
 ---
 # Microsoft Agent Framework, Part 3: Orchestrating Multiple Agents
 
