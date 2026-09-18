@@ -1,9 +1,9 @@
 ---
-title: "Observability, evaluations, and guardrails"
-excerpt: "Learn how to make Microsoft Foundry agents trustworthy with tracing, evaluations, and guardrails backed by practical Python examples."
+title: "Microsoft Foundry SDK: Part 5 – Monitoring agents"
+excerpt: "Instrument Microsoft Foundry agents with traces, latency, token, and tool-call telemetry using OpenTelemetry and Application Insights."
 slug: microsoft-foundry/part5-monitoring
 artifactPath: "microsoft-foundry/part5-monitoring"
-tags: []
+tags: ["azure", "ai-foundry", "sdk", "python", "agents", "observability", "tracing"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":5}
 publishAt: "2026-07-06T18:01:00.000Z"
 ---
