@@ -1,11 +1,11 @@
 ---
-title: "Microsoft Foundry SDK: Part 7 – Guardrails for agents"
+title: "Guardrails for agents"
 excerpt: "Apply and test model-level and agent-level Responsible AI policies in Microsoft Foundry, including blocking and annotation behavior."
 slug: microsoft-foundry/part7-guardrails
 artifactPath: "microsoft-foundry/part7-guardrails"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents", "guardrails", "responsible-ai"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":7}
-publishAt: null
+publishAt: "2026-09-18T13:59:00.000Z"
 ---
 # Part 7 – Guardrails: model and agent safety policies
 
