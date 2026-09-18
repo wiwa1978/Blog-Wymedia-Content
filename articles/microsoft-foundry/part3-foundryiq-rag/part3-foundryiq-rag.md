@@ -3,11 +3,11 @@ title: "Foundry IQ and RAG"
 excerpt: "Build a retrieval-augmented generation pipeline from a PDF with Azure AI Search, Foundry IQ, and Microsoft Foundry Agent Service."
 slug: microsoft-foundry/part3-foundryiq-rag
 artifactPath: "microsoft-foundry/part3-foundryiq-rag"
-tags: ["azure", "ai-foundry", "foundry-iq", "rag", "azure-ai-search", "python", "agents", "mcp"]
+tags: []
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":3}
-publishAt: null
+publishAt: "2026-09-18T10:10:00.000Z"
 ---
-# Part 3 - Build a RAG agent with Foundry IQ
+# Part 3 - Foundry IQ with one document
 
 In [Part 1 - Getting Started with the Microsoft Foundry SDK](/blog/microsoft-foundry/part1-getting-started) we created the Foundry resource, project, model deployment, and first agent. In [Part 2 - Beyond the basics](/blog/microsoft-foundry/part2-tools-mcp-memory) we added tools, MCP servers, toolboxes, and memory.
 
@@ -27,7 +27,6 @@ The complete runnable example is in the [`code`](code) folder:
 - [`01_create_search_index.py`](code/01_create_search_index.py) extracts, chunks, embeds, and uploads the PDF.
 - [`02_create_knowledge_base.py`](code/02_create_knowledge_base.py) creates the Foundry IQ knowledge source and knowledge base.
 - [`03_agent_with_knowledge.py`](code/03_agent_with_knowledge.py) creates an agent and starts an interactive question-and-answer session.
-- [`04_multi_document_index.py`](code/04_multi_document_index.py) and [`05_knowledge_base_with_filters.py`](code/05_knowledge_base_with_filters.py) extend Steps 1-2 with multi-document support, token-aware chunking, and document-level access control — see [Step 4 and Step 5](#step-4-run-04_multi_document_indexpy) further down.
 
 ## Putting it all together
 
@@ -58,7 +57,6 @@ PDF
 
 This is also a useful development sequence. You can inspect the raw index independently, validate the knowledge base independently, and only then attach an agent.
 
-Two optional scripts, `04_multi_document_index.py` and `05_knowledge_base_with_filters.py`, extend Steps 1-2 with multi-document support, token-aware chunking, and document-level access control. They build their own index and knowledge base, so they don't change anything from Steps 1-3 — see [Step 4](#step-4-run-04_multi_document_indexpy) and [Step 5](#step-5-run-05_knowledge_base_with_filterspy) further down.
 
 ## First understand the execution order
 
@@ -86,16 +84,15 @@ Run the files in this order:
 | 1 | [`01_create_search_index.py`](code/01_create_search_index.py) | Reads the PDF locally, chunks and embeds it, creates a Search index, and uploads the chunks |
 | 2 | [`02_create_knowledge_base.py`](code/02_create_knowledge_base.py) | Creates a Foundry IQ knowledge source and knowledge base in the existing Search service |
 | 3 | [`03_agent_with_knowledge.py`](code/03_agent_with_knowledge.py) | Creates the project connection, creates the agent, and starts interactive Q&A |
-| 4 *(optional)* | [`04_multi_document_index.py`](code/04_multi_document_index.py) | An alternative to Step 1: builds a second index from every PDF in `data/`, using token-aware chunking and document/access-control metadata |
-| 5 *(optional)* | [`05_knowledge_base_with_filters.py`](code/05_knowledge_base_with_filters.py) | An alternative to Step 2: builds a knowledge source/base on top of Step 4's index and demonstrates document-level access control |
 
 The words “chunk” and “embed” describe preprocessing performed by the first
 script; they do not mean that an Azure AI Search service is being provisioned
 at that point.
 
-Steps 4 and 5 are optional and independent of Steps 1-3: they build their own
-index, knowledge source, and knowledge base with different names, so running
-them won't affect anything you built in Steps 1-3.
+Once you have this one-document pipeline working, [Part 4 - Foundry IQ with
+multiple documents](/blog/microsoft-foundry/part4-foundryiq-multi-document)
+extends it to a whole folder of PDFs with token-aware chunking, document
+identity, and document-level access control.
 
 ## What is Foundry IQ?
 
@@ -314,7 +311,7 @@ Chunk 1 is actually just this dict — a `page_number` and the `text`, nothing e
 }
 ```
 
-There is no `document_id`, `document_name`, `security_group`, or `department` field — Step 1's index only ever holds one file, so there was nothing to identify or filter by. Compare that with the [Step 4 chunk record](#as-uploaded-to-the-index-step-4) further down, which adds exactly those four fields once the index has to represent more than one document.
+There is no `document_id`, `document_name`, `security_group`, or `department` field — Step 1's index only ever holds one file, so there was nothing to identify or filter by. [Part 4 - Foundry IQ with multiple documents](/blog/microsoft-foundry/part4-foundryiq-multi-document) adds exactly those four fields once the index has to represent more than one document.
 
 Chunking is deliberately simple here so the mechanics are visible. A production pipeline might use a layout-aware parser, token-based chunk sizes, headings, tables, document identifiers, and richer citation metadata.
 
@@ -732,198 +729,6 @@ Agent: Quantum entanglement is ...
 
 In the working test, the answer included Foundry IQ source annotations and identified page 2 as the source.
 
-## Step 4 — Run `04_multi_document_index.py`
-
-Steps 1-3 prove the pipeline end to end with the simplest possible index: one PDF, character-based chunking, no document identity, no access-control metadata. That's fine for a demo, but a few gaps show up quickly in a real application. `04_multi_document_index.py` addresses four of them at once, building a second, separate index so you can compare it with Step 1's:
-
-### 4a. Give every chunk a stable document identity
-
-Step 1's index has no notion of "which file" a chunk came from — there is only ever one PDF. This script derives a stable `document_id` from the filename and stores it alongside a human-readable `document_name`:
-
-```python
-def document_id_for(pdf_path) -> str:
-    return pdf_path.stem
-
-
-document_id = document_id_for(pdf_path)
-chunk_id = f"{document_id}_{page_number}_{chunk_index}"
-```
-
-Both fields are added to the index schema as filterable, retrievable fields, and later passed to the knowledge source's `source_data_fields` in Step 5, so citations can say *which file* an answer came from — not just which page.
-
-#### As uploaded to the index (Step 4)
-
-Here is a real chunk record produced by the script, exactly as it's uploaded to the index:
-
-```json
-{
-  "id": "quantum-computing-rag-test_1_0",
-  "document_id": "quantum-computing-rag-test",
-  "document_name": "quantum-computing-rag-test.pdf",
-  "page_number": 1,
-  "security_group": "general",
-  "department": "research",
-  "text": "Quantum Computing: How It Works and Where It Can Help\nExecutive summary\nQuantum computing is a new model of computing that uses quantum-mechanical effects to process information. Classical computers store information as..."
-}
-```
-
-Notice that `document_id` and `document_name` are **not** appended to the `text` field itself — the chunk text is exactly what came off the PDF page, untouched. Document identity lives in its own metadata fields alongside the text, the same way `page_number` does. That separation matters: it's what lets you filter or cite by document without the model ever seeing "noise" injected into the content it's answering from, and it's what Step 5's `source_data_fields` and `filter_add_on` operate on.
-
-Compare that with [Step 1's chunk record](#as-uploaded-to-the-index-step-1), which only ever had `page_number` and `text` — there was no document to identify because the index only ever held one file.
-
-### 4b. Index every PDF in `data/`, not just the first one
-
-Step 1 calls `find_pdf()`, which returns a single file. This script calls a new helper, `find_all_pdfs()`, and loops over the result:
-
-```python
-pdf_paths = find_all_pdfs()
-
-all_chunks: list[dict] = []
-for pdf_path in pdf_paths:
-    all_chunks.extend(extract_chunks_token_aware(pdf_path))
-```
-
-The `data/` folder now has a second PDF, `neuromorphic-computing-rag-test.pdf` (rendered from a markdown source with the same "executive summary + numbered sections" shape as the quantum-computing document, used earlier in this article), so this isn't a hypothetical — the script genuinely indexes a small two-document library. Drop in a third PDF and rerun — no code changes needed.
-
-### 4c. Chunk on tokens, not characters
-
-Step 1's splitter slices raw text every 1,200 *characters*, which can cut a word in half — the article's [concrete chunking example](#extract-and-chunk-the-pdf) shows exactly where that happens. This script uses `tiktoken`, the same tokenizer family the embedding model consumes, and slices on token boundaries instead:
-
-```python
-import tiktoken
-
-_encoding = tiktoken.get_encoding("cl100k_base")
-
-tokens = _encoding.encode(text)
-chunk_tokens = tokens[start : start + CHUNK_SIZE_TOKENS]
-chunk_text = _encoding.decode(chunk_tokens).strip()
-```
-
-This doesn't guarantee chunks break on sentence boundaries (that would need a layout- or sentence-aware splitter), but it does mean the chunk size is measured in the same unit the model actually sees, and the character-level word-splitting problem goes away.
-
-### 4d. Tag every chunk with access-control metadata
-
-Finally, each chunk gets a `security_group` and `department` field, looked up from a small metadata table keyed by filename:
-
-```python
-DOCUMENT_METADATA: dict[str, dict[str, str]] = {
-    "quantum-computing-rag-test.pdf": {"security_group": "general", "department": "research"},
-    "neuromorphic-computing-rag-test.pdf": {"security_group": "confidential", "department": "research"},
-}
-DEFAULT_METADATA = {"security_group": "general", "department": "engineering"}
-```
-
-In a real system this metadata would come from wherever document permissions already live — a manifest file, a database, a document-management system — not a Python dict. It's inlined here so the example stays self-contained, but the two entries are deliberately different: this is what makes Step 5's access-control demo actually mean something, instead of a single document that's either visible or not. Both fields are marked `filterable` in the index schema, which is what makes them usable as a knowledge-source filter in Step 5.
-
-Run it:
-
-```bash
-python 04_multi_document_index.py
-```
-
-```text
-Found 2 PDF(s): neuromorphic-computing-rag-test.pdf, quantum-computing-rag-test.pdf
-  neuromorphic-computing-rag-test.pdf: 9 chunks
-  quantum-computing-rag-test.pdf: 21 chunks
-Embedding 30 chunks across 2 document(s)...
-Index 'foundry-iq-rag-index-v2' created or updated successfully.
-Uploaded 30 chunks (0 failed).
-```
-
-Token-aware chunking produced 21 chunks from the quantum-computing PDF that produced 27 character-based chunks in Step 1 — a reminder that "chunk size" means something slightly different depending on whether you're counting characters or tokens.
-
-> **Note — why the two documents don't produce a proportional number of chunks.** The quantum-computing PDF (8 pages, ~4,400 tokens total) produces 21 chunks, while the shorter neuromorphic-computing PDF (5 pages, ~2,100 tokens total) produces only 9 — not because anything went wrong, but because chunking resets per page: each page is split independently into non-overlapping (well, 50-token-overlapping) windows of 300 tokens, so a page with ~500-650 tokens yields 2-3 chunks. The neuromorphic PDF's last page has only about 50 tokens of text, so it becomes a single small chunk instead of a full one. Fewer pages and less text per page add up to roughly half the chunk count. If you see an unexpectedly low chunk count for one of your own documents, check the token count per page rather than assuming a bug.
-
-## Step 5 — Run `05_knowledge_base_with_filters.py`
-
-This script wraps the Step 4 index in its own knowledge source and knowledge base, then demonstrates document-level access control by querying the knowledge base directly — no agent involved — as two different simulated callers.
-
-### 5a. Reference the new fields in the knowledge source
-
-The knowledge source's `source_data_fields` now includes `document_id` and `document_name`, so retrieval references identify the source file:
-
-```python
-search_index_parameters=SearchIndexKnowledgeSourceParameters(
-    search_index_name=SEARCH_INDEX_NAME_V2,
-    semantic_configuration_name=SEMANTIC_CONFIG_NAME,
-    source_data_fields=[
-        SearchIndexFieldReference(name="page_chunk"),
-        SearchIndexFieldReference(name="page_number"),
-        SearchIndexFieldReference(name="document_id"),
-        SearchIndexFieldReference(name="document_name"),
-    ],
-)
-```
-
-### 5b. Apply a per-caller filter at retrieval time
-
-`SearchIndexKnowledgeSourceParameters` supports a `base_filter` — a default filter condition baked into the knowledge source itself. This example leaves that unset and instead applies a filter per request, through `filter_add_on` on `SearchIndexKnowledgeSourceParams`:
-
-```python
-from azure.search.documents.knowledgebases import KnowledgeBaseRetrievalClient
-from azure.search.documents.knowledgebases.models import (
-    KnowledgeBaseMessage,
-    KnowledgeBaseMessageTextContent,
-    KnowledgeBaseRetrievalRequest,
-    SearchIndexKnowledgeSourceParams,
-)
-
-client = KnowledgeBaseRetrievalClient(
-    endpoint=SEARCH_ENDPOINT,
-    credential=DefaultAzureCredential(),
-    knowledge_base_name=KNOWLEDGE_BASE_NAME_V2,
-)
-
-request = KnowledgeBaseRetrievalRequest(
-    messages=[KnowledgeBaseMessage(role="user", content=[KnowledgeBaseMessageTextContent(text=question)])],
-    knowledge_source_params=[
-        SearchIndexKnowledgeSourceParams(
-            knowledge_source_name=KNOWLEDGE_SOURCE_NAME_V2,
-            filter_add_on=f"security_group eq '{security_group}'",
-        )
-    ],
-)
-
-response = client.retrieve(request)
-```
-
-This is the important distinction for access control: the knowledge source and knowledge base don't decide who can see what. The *caller* — an agent, an API, your own backend — passes the caller's security group on every retrieval call, and Azure AI Search enforces it before any content reaches the model. A fixed `base_filter` on the knowledge source is useful for an organization-wide floor (for example, always excluding a `department`), while `filter_add_on` is what scopes a single request to a single caller.
-
-Run it:
-
-```bash
-python 05_knowledge_base_with_filters.py
-```
-
-```text
---- Caller in security group 'general' asks: 'What is quantum entanglement?' ---
-Answer: Quantum entanglement is a quantum property where the state of each qubit
-cannot be fully described independently of the others...
-Referenced 12 chunk(s):
-  - quantum-computing-rag-test.pdf (page 2)
-  - quantum-computing-rag-test.pdf (page 8)
-  ...
-
---- Caller in security group 'general' asks: 'Why is energy efficiency the main argument for neuromorphic computing?' ---
-Answer: I don't have access to information that answers this question from the retrieved documents.
-Referenced 0 chunks - this caller's filter matched no documents.
-
---- Caller in security group 'confidential' asks: 'What is quantum entanglement?' ---
-Answer: I don't have access to information in the retrieved documents that answers your question.
-Referenced 0 chunks - this caller's filter matched no documents.
-
---- Caller in security group 'confidential' asks: 'Why is energy efficiency the main argument for neuromorphic computing?' ---
-Answer: Energy efficiency is the main argument for neuromorphic computing because
-these systems are designed to do work only when there is useful input, rather than
-continuously processing on a global clock like conventional computers...
-Referenced 9 chunk(s):
-  - neuromorphic-computing-rag-test.pdf (page 2)
-  - neuromorphic-computing-rag-test.pdf (page 4)
-  ...
-```
-
-The same two questions are asked as both callers. The `general` caller can see the quantum-computing document but not the confidential neuromorphic-computing one; the `confidential` caller sees the opposite. Neither result is the model refusing — Azure AI Search simply never returns chunks that don't match the caller's `filter_add_on`, so the boundary holds in both directions, not just as a single access-denied edge case.
-
 ## Knowledge versus web search, file search, and MCP
 
 I quite frequently get questions from readers who are confused about how Foundry IQ's knowledge base relates to the other retrieval options already available in Foundry — web search, file search, and MCP servers. It's a fair question: they all let an agent "look something up" before answering, so the boundaries aren't obvious at first glance. Here's how they actually differ:
@@ -938,15 +743,13 @@ I quite frequently get questions from readers who are confused about how Foundry
 
 Foundry IQ is not just another way to upload a file. It gives you control over the search index, semantic configuration, vector search, citation fields, retrieval instructions, and the model used for agentic retrieval. It is a better fit when the knowledge layer needs to be shared by multiple agents or integrated with an existing Azure AI Search estate.
 
+## Next: multiple documents
+
+The multi-document extension, token-aware chunking, and document-level access control are covered in [Part 4 - Foundry IQ with multiple documents](/blog/microsoft-foundry/part4-foundryiq-multi-document).
+
 ## What to try next
 
-Steps 4 and 5 cover the most common production gaps, but there's more to explore:
-
-1. Replace the token-window splitter with a layout-aware chunker that respects headings, tables, and sentence boundaries instead of a fixed token count.
-2. Create a second knowledge source (for example, a different index or a SharePoint knowledge source) and update the knowledge base's retrieval instructions so it can choose between them.
-3. Combine a fixed `base_filter` on the knowledge source (an organization-wide floor) with a per-request `filter_add_on` (per-caller scoping), instead of relying on `filter_add_on` alone.
-4. Pass a real per-user filter instead of a hardcoded string — for example, resolve the caller's security groups from Microsoft Entra ID at request time.
-
+The single-document walkthrough is a foundation. In Part 4, we extend it to multiple documents, richer metadata, token-aware chunking, and document-level access control.
 ## Closing thoughts
 
 RAG is the bridge between a general-purpose language model and the information your application actually needs to use. Foundry IQ makes the retrieval layer a first-class, reusable capability: Azure AI Search handles the search foundation, the knowledge base handles retrieval planning and synthesis, and Foundry Agent Service exposes the result to an agent through MCP.
