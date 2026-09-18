@@ -5,7 +5,7 @@ slug: microsoft-foundry/part10-from-notebook-to-production
 artifactPath: "microsoft-foundry/part10-from-notebook-to-production"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":10}
-publishAt: "2026-07-22T15:55:00.000Z"
+publishAt: "2026-08-26T15:55:00.000Z"
 ---
 # Microsoft Foundry SDK: Part 10 – From Notebook to Production
 
