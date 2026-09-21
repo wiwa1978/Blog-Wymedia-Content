@@ -1,5 +1,5 @@
 ---
-title: "Microsoft Foundry SDK: Part 6 - Evaluate agent quality"
+title: "Evaluate agent quality"
 excerpt: "Build a customer-support FAQ evaluation dataset, score it with Foundry evaluators, and inspect evaluation runs."
 slug: microsoft-foundry/part6-evaluations
 artifactPath: "microsoft-foundry/part6-evaluations"
