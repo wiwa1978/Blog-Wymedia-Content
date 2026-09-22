@@ -5,7 +5,7 @@ slug: microsoft-foundry/part7-guardrails
 artifactPath: "Microsoft Foundry/part7-guardrails"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents", "guardrails", "responsible-ai"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":7}
-publishAt: "2026-07-12T18:01:00.000Z"
+publishAt: "2026-07-28T18:01:00.000Z"
 ---
 ---
 title: "Microsoft Foundry SDK: Part 7 - Compare agents with and without guardrails"
