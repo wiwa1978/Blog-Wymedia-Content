@@ -7,8 +7,6 @@ tags: ["azure", "ai-foundry", "sdk", "python", "agents"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":9}
 publishAt: "2026-08-09T09:04:00.000Z"
 ---
-# Microsoft Foundry SDK: Part 9 – Deploying Hosted Agents
-
 You've built sophisticated agents in the Foundry project environment (parts 1–8). But production demands **persistent, scalable infrastructure**: agents that run 24/7, scale to thousands of concurrent users, and remain isolated from development workspaces.
 
 After monitoring, evaluation, and guardrails in [Parts 5–7](/blog/microsoft-foundry/part5-monitoring), this post walks through **Hosted Agent deployment**—containerizing your agent, pushing to Azure Container Registry, provisioning managed compute, and invoking via production endpoints. You'll see both the **Python SDK path** (full control, explicit steps) and the **`azd` shortcut** (automated, convention-over-configuration).
