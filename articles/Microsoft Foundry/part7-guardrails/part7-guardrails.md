@@ -7,15 +7,6 @@ tags: ["azure", "ai-foundry", "sdk", "python", "agents", "guardrails", "responsi
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":7}
 publishAt: "2026-07-28T18:01:00.000Z"
 ---
----
-title: "Microsoft Foundry SDK: Part 7 - Compare agents with and without guardrails"
-excerpt: "Create two Microsoft Foundry prompt agents from the same support scenario, one without an RAI guardrail and one with a guardrail policy, then run a built-in set of test prompts from the command line and see a clear diff of what changed."
-slug: microsoft-foundry/part7-guardrails
-artifactPath: "Microsoft Foundry/part7-guardrails"
-tags: ["azure", "ai-foundry", "sdk", "python", "agents", "guardrails", "responsible-ai"]
-series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":7}
-publishAt: "2026-07-12T18:01:00.000Z"
----
 # Part 7 - Using Foundry Guardrails
 
 Guardrails are the safety and policy controls around an AI system. They exist because a model can receive prompts or produce answers that are inappropriate, unsafe, private, or outside the use case you intended. A good assistant should not help with hateful content, graphic violence, sexual content, self-harm instructions, private customer data, jailbreak attempts, or actions it is not authorized to perform.
