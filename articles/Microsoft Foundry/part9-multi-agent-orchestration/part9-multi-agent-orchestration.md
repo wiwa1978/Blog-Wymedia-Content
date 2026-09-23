@@ -1,356 +1,424 @@
 ---
 title: "Multi-Agent Orchestration"
-excerpt: "Build coordinated Microsoft Foundry agent systems with the Agent-to-Agent pattern, specialist agents, and practical Python orchestration examples."
+excerpt: "Create specialist Microsoft Foundry agents and coordinate them with handoffs, sequential workflows, and parallel reviews."
 slug: microsoft-foundry/part9-multi-agent-orchestration
 artifactPath: "Microsoft Foundry/part9-multi-agent-orchestration"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":9}
 publishAt: "2026-08-05T16:02:00.000Z"
 ---
-# Microsoft Foundry SDK: Part 9 – Multi-Agent Orchestration
+# Microsoft Foundry SDK: Part 9 - Multi-Agent Orchestration
 
-Building on parts 1–3, you now know how to create individual agents, attach tools, and observe their behavior. But production systems often need **multiple specialized agents** working together—a dispatcher coordinating with experts, a content reviewer validating an analyst's output, or a fallback chain when one agent can't handle a request.
+An individual agent can answer a question, call a tool, and maintain a conversation. Production applications often need more structure: one component classifies the request, a specialist handles the domain, and another component reviews or combines the result.
 
-Parts [5](/blog/microsoft-foundry/part5-monitoring), [6](/blog/microsoft-foundry/part6-evaluations), and [7](/blog/microsoft-foundry/part7-guardrails) add the operational foundations that multi-agent systems need. 
+This article builds that progression with Microsoft Foundry prompt agents and the Microsoft Agent Framework:
 
-This post introduces the **Agent-to-Agent (A2A)** pattern: a native SDK way for one Foundry agent to call another agent as a tool. You'll expose a specialist agent as an endpoint, create an A2A connection, and orchestrate calls from a coordinator agent—all with real Python snippets.
+1. Create focused specialist agents and a handoff agent.
+2. Invoke a specialist directly.
+3. Route a request through the handoff agent.
+4. Compare sequential and concurrent orchestration.
+5. Build a complete multi-agent application with a handoff, sequential review, and concurrent specialists.
+
+## Choose the orchestration layer first
+
+The current Microsoft architecture separates two responsibilities:
+
+- **Microsoft Agent Framework** owns the orchestration logic: sequencing, fan-out, handoffs, group chat, and manager-style workflows.
+- **Microsoft Foundry** provides the project, model deployments, agent hosting, identity, tracing, evaluation, and operational controls around that logic.
+
+The numbered examples in this article deliberately show the mechanics with the Azure AI Projects Responses API. For a new production workflow, prefer the Agent Framework orchestration builders once the pattern is clear. Avoid starting new work on classic connected agents; Microsoft documents that classic Agent Service as deprecated and scheduled for retirement.
+
+## The orchestration patterns
+
+The Agent Framework provides five useful patterns:
+
+| Pattern | Use it when | Main trade-off |
+| --- | --- | --- |
+| Sequential | Work has a fixed order, such as draft then review. | Latency accumulates at each step. |
+| Concurrent | Independent specialists can assess the same input. | Token and capacity usage multiply. |
+| Handoff | One specialist should take ownership of the task. | Routing quality depends on agent descriptions. |
+| Group chat | Agents need to react to each other's responses. | Context is synchronized across participants, increasing token usage. |
+| Magentic | The task is open-ended and needs planning and replanning. | Cost and behavior are less predictable; cap rounds and stalls. |
+
+Start with one agent and tools. Add multiple agents only when specialization, isolation, or independent perspectives justify the extra latency and failure modes.
 
 ## Prerequisites
 
-- Azure CLI authenticated: `az account show`
-- A Foundry project with `azure-ai-projects` >= 1.14.0 and `openai` >= 1.58.0
-- Two agents already created (or use the part 1 template to create them)
-- Basic understanding of agents and tools (parts 1–2)
+- Azure CLI authenticated with an account that can access the Foundry project: `az login`
+- A Microsoft Foundry project
+- A deployed model in that project
+- Python 3.10 or later
+- `azure-ai-projects` 2.6.0 or later
 
-## Step 1: Recap – Your Baseline Single Agent
+The examples use the current project endpoint pattern:
 
-Recall the part 1 pattern: create an agent, attach tools, invoke via `responses.create()`:
-
-```python
-from azure.ai.projects import AIProjectClient
-from azure.ai.projects.models import PromptAgentDefinition, ToolUseBlock
-from openai.types.chat import ChatCompletionMessageParam
-
-# Initialize Foundry client
-project_client = AIProjectClient.from_config()
-
-# Define a simple analyst agent
-analyst_agent = PromptAgentDefinition(
-    name="analyst-agent",
-    instructions="You are a data analyst. Analyze the data and provide insights."
-)
-
-# Create agent
-project_client.agents.create_agent(
-    agent_definition=analyst_agent,
-    model="gpt-4o-mini"
-)
-print("✓ Analyst agent created")
-
-# Invoke the agent
-response = project_client.agents.create_response(
-    agent_name="analyst-agent",
-    user_message="What is the trend in Q3 sales?"
-)
-
-print(f"✓ Response received: {response.output_text}")
+```text
+https://<account>.services.ai.azure.com/api/projects/<project>
 ```
 
-In a multi-agent scenario, you might want to send the analyst's output to a **review agent** for validation before returning to the user. This is where A2A comes in.
+Create a virtual environment and install the dependencies:
 
-## Step 2: Expose a Specialist Agent as an A2A Target
-
-The specialist agent (e.g., a reviewer) must be enabled as an A2A endpoint. Use `project.agents.update_details()` to configure it:
-
-```python
-from azure.ai.projects.models import (
-    AgentEndpointConfig,
-    ProtocolConfiguration,
-    ResponsesProtocolConfiguration,
-    A2AProtocolConfiguration,
-    AgentCard,
-    AgentCardSkill
-)
-
-# Enable the specialist agent (reviewer) as an A2A target
-specialist_name = "reviewer-agent"
-
-project_client.agents.update_details(
-    agent_name=specialist_name,
-    agent_endpoint=AgentEndpointConfig(
-        protocol_configuration=ProtocolConfiguration(
-            responses=ResponsesProtocolConfiguration(),
-            a2a=A2AProtocolConfiguration()
-        )
-    ),
-    agent_card=AgentCard(
-        version="1.0",
-        description="Reviews and validates analysis",
-        skills=[
-            AgentCardSkill(
-                id="validate",
-                name="Content Validation",
-                description="Validates the accuracy and completeness of analysis"
-            )
-        ]
-    )
-)
-
-print(f"✓ {specialist_name} exposed as A2A target")
-print(f"  Card published at: /.../endpoint/protocols/a2a/agentCard/v1.0")
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r code\requirements.txt
+Copy-Item code\.env.example code\.env
 ```
 
-**What happened?**
-- The specialist agent can now receive calls from other agents
-- Its `AgentCard` is published at `.../agentCard/v1.0` (Foundry hosts this automatically)
-- Incoming calls authenticate via Microsoft Entra ID (no key-based auth)
+Copy `code/.env.example` to `code/.env`, then fill in `AZURE_AI_PROJECT_ENDPOINT`, `MODEL_DEPLOYMENT`, and a unique `AGENT_PREFIX`.
 
-## Step 3: Create an A2A Connection
+## What we are building
 
-An A2A connection represents the link between your orchestrator and the specialist. Create it in the Foundry portal or via REST, then retrieve it by name in the SDK:
+The sample uses a small retail domain so each agent has a clear responsibility:
 
-```python
-# After creating the connection in portal (or via REST PUT),
-# retrieve the connection ID from the project
-connection = project_client.connections.get(name="specialist-connection")
-connection_id = connection.id
+- **Shopper specialist**: product selection and recommendations.
+- **Inventory specialist**: availability and delivery questions.
+- **Loyalty specialist**: points, discounts, and membership benefits.
+- **Reviewer specialist**: checks drafts for unsupported claims and missing assumptions.
+- **Handoff agent**: classifies the request and returns the target specialist as JSON.
 
-print(f"✓ A2A connection created")
-print(f"  Connection ID: {connection_id}")
-```
+The handoff agent does not answer the customer. It makes a routing decision. The application then invokes the selected specialist. Keeping classification and dispatch as explicit application steps makes the workflow easier to validate, observe, and change than hiding the routing logic in one large prompt.
 
-The connection holds the Foundry project ID of the specialist and establishes the trust boundary.
-
-## Step 4: Create an Orchestrator Agent with A2APreviewTool
-
-Now create the orchestrator agent with an `A2APreviewTool` that references the specialist:
-
-```python
-from azure.ai.projects.models import PromptAgentDefinition, A2APreviewTool
-
-# Define the orchestrator agent
-orchestrator = PromptAgentDefinition(
-    name="orchestrator-agent",
-    instructions="""You are an orchestrator agent. 
-1. First, call the specialist-agent to review and validate the analysis.
-2. Wait for the response.
-3. Return the specialist's feedback to the user.""",
-    tools=[
-        A2APreviewTool(
-            project_connection_id=connection_id
-        )
-    ]
-)
-
-# Create the orchestrator
-project_client.agents.create_agent(
-    agent_definition=orchestrator,
-    model="gpt-4o-mini"
-)
-
-print("✓ Orchestrator agent created with A2APreviewTool")
-```
-
-**What is A2APreviewTool?**
-- A tool that calls another Foundry agent by name
-- The connection ID tells the SDK which Foundry project to find the specialist in
-- Supports tool choice ("always use this tool") or optional use
-- Currently text-only (no image/audio streaming)
-
-## Step 5: Orchestrator Calling Specialist – Streaming Response
-
-The orchestrator invokes the specialist via `responses.create()`. The specialist name is passed via `agent_reference`:
-
-```python
-# Orchestrator makes a request that internally calls the specialist
-response = project_client.agents.create_response(
-    agent_name="orchestrator-agent",
-    user_message="Analyze sales trends and get them reviewed.",
-    extra_body={
-        "agent_reference": {
-            "agent_name": "reviewer-agent"
-        }
-    },
-    stream=True
-)
-
-# Stream the orchestrator's response
-print("✓ Orchestrator response (streaming):")
-for chunk in response:
-    if hasattr(chunk, 'output_text') and chunk.output_text:
-        if hasattr(chunk.output_text, 'delta'):
-            print(chunk.output_text.delta, end="", flush=True)
-        elif chunk.output_text.value:
-            print(chunk.output_text.value)
-
-print("\n✓ A2A call completed")
-```
-
-**What happened?**
-- The orchestrator received the user's request
-- It detected that it should use the specialist (via tool choice)
-- It called the specialist agent via A2A protocol
-- The specialist processed the request and returned a response
-- The orchestrator streamed back the results
-
-## Step 6: Hosted Agent Variant – Toolbox Pattern (Optional)
-
-If you're using a **Hosted agent** as the orchestrator, use the Microsoft Agent Framework with a toolbox:
-
-```python
-from agent_framework.foundry import FoundryChatClient
-from agent_framework.foundry import A2APreviewToolboxTool
-
-# Initialize Foundry chat client (for Hosted agents)
-chat_client = FoundryChatClient(
-    project_endpoint="<your-foundry-endpoint>",
-    model="gpt-4o-mini",
-    agent_name="orchestrator-hosted-agent"
-)
-
-# Define A2A tools in a toolbox
-a2a_tools = {
-    "specialist": A2APreviewToolboxTool(
-        project_connection_id=connection_id,
-        agent_name="reviewer-agent"
-    )
-}
-
-# Send a request with the A2A tool available
-response = chat_client.chat(
-    "Analyze and review sales data",
-    tools=a2a_tools
-)
-
-print(f"✓ Hosted orchestrator response: {response}")
-```
-
-This pattern mirrors the toolbox approach from part 2—multiple tools can be grouped and the agent chooses which to invoke.
-
-## Step 7: Combined Multi-Agent Orchestration Snippet
-
-Here's a complete example tying it all together:
-
-```python
-from azure.ai.projects import AIProjectClient
-from azure.ai.projects.models import (
-    PromptAgentDefinition, A2APreviewTool,
-    AgentEndpointConfig, ProtocolConfiguration,
-    ResponsesProtocolConfiguration, A2AProtocolConfiguration,
-    AgentCard, AgentCardSkill
-)
-
-project_client = AIProjectClient.from_config()
-
-# === Setup: Expose specialist as A2A target ===
-project_client.agents.update_details(
-    agent_name="specialist-agent",
-    agent_endpoint=AgentEndpointConfig(
-        protocol_configuration=ProtocolConfiguration(
-            responses=ResponsesProtocolConfiguration(),
-            a2a=A2AProtocolConfiguration()
-        )
-    ),
-    agent_card=AgentCard(
-        version="1.0",
-        description="Specialist agent",
-        skills=[]
-    )
-)
-
-# === Setup: Get A2A connection ===
-connection = project_client.connections.get(name="specialist-connection")
-
-# === Create orchestrator with A2A tool ===
-orchestrator = PromptAgentDefinition(
-    name="multi-agent-orchestrator",
-    instructions="Coordinate with specialist agent. Call specialist for validation.",
-    tools=[A2APreviewTool(project_connection_id=connection.id)]
-)
-
-project_client.agents.create_agent(
-    agent_definition=orchestrator,
-    model="gpt-4o-mini"
-)
-
-# === Invoke orchestrator ===
-response = project_client.agents.create_response(
-    agent_name="multi-agent-orchestrator",
-    user_message="Process and validate customer data",
-    extra_body={"agent_reference": {"agent_name": "specialist-agent"}},
-    stream=True
-)
-
-print("✓ Multi-agent orchestration:")
-for chunk in response:
-    if hasattr(chunk, 'output_text') and chunk.output_text and hasattr(chunk.output_text, 'delta'):
-        print(chunk.output_text.delta, end="", flush=True)
-
-print("\n✓ Complete")
-```
-
-## Multi-Agent Orchestration Flow
+In the diagram below, **Handoff agent — classify intent** is the component that produces the `target`, `confidence`, and `reason` fields. The confidence is the model's self-assessment of its routing decision, not an independent platform measurement.
 
 ```mermaid
-graph LR
-    User["👤 User Request<br/>Analyze data &<br/>validate result"]
-    Orch["🎯 Orchestrator Agent<br/>(Multi-Agent Orchestrator)"]
-    ConnA["🔗 A2A Connection<br/>trust boundary"]
-    Spec["✓ Specialist Agent<br/>(Validator)"]
-    Result["📊 Response<br/>Analysis + Validation"]
-    
-    User -->|"user_message"| Orch
-    Orch -->|"calls via A2APreviewTool"| ConnA
-    ConnA -->|"authenticates & routes"| Spec
-    Spec -->|"validation response"| Orch
-    Orch -->|"streams back to user"| Result
-    
-    classDef userNode fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    classDef agentNode fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef connNode fill:#fff9c4,stroke:#f57f17,stroke-width:2px
-    classDef resultNode fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    
-    class User userNode
-    class Orch,Spec agentNode
-    class ConnA connNode
-    class Result resultNode
+flowchart LR
+    User["User request"] --> Handoff["Handoff agent<br/>classify intent"]
+    Handoff --> Shopper["Shopper specialist"]
+    Handoff --> Inventory["Inventory specialist"]
+    Handoff --> Loyalty["Loyalty specialist"]
+    Shopper --> Response["Application response"]
+    Inventory --> Response
+    Loyalty --> Response
 ```
+
+## Step 1: Create the specialist agents
+
+The Foundry SDK represents an agent as a versioned definition. A shared helper keeps the creation code consistent, while each specialist has its own focused instructions and, in a real application, its own tools and permissions.
+
+Run:
+
+```powershell
+python code\00_create_agents.py
+```
+
+The script creates a new version of each agent. The names are prefixed from `.env` so that multiple developers can run the sample in the same project without colliding.
+
+The important part of the factory is the current SDK call:
+
+```python
+agent = project_client.agents.create_version(
+    agent_name=name,
+    description=description,
+    definition=PromptAgentDefinition(
+        model=MODEL_DEPLOYMENT,
+        instructions=instructions,
+    ),
+)
+```
+
+This replaces the older `create_agent()` and `AIProjectClient.from_config()` patterns used in some early Agent Service examples.
+
+## Step 2: Invoke a specialist directly
+
+Before adding orchestration, test one specialist in isolation. The script reads the `SPECIALIST` environment variable from your local `code/.env`; in this example it is set to `inventory`, so the inventory specialist handles the request. The question comes from `SPECIALIST_PROMPT`.
+
+```powershell
+python code\01_invoke_specialist.py
+```
+
+With the sample `.env` values, the command invokes the inventory specialist and produces a response such as:
+
+```text
+--- Inventory specialist is answering ---
+I can help with inventory questions, but I don't have live stock data here, so I can't confirm availability for a blue trail running jacket in medium.
+
+If you want, I can help you check:
+- the exact product name or SKU
+- whether it's in stock at a specific store or warehouse
+- delivery timing once you have the item listing
+
+If this is a product lookup, the inventory or sales specialist should handle the exact availability check.
+```
+
+The important call is `get_openai_client(agent_name=agent_name)`. It selects the prefixed inventory agent and returns an OpenAI-compatible client whose Responses API requests are handled by that deployed agent:
+
+```python
+responses = project_client.get_openai_client(
+    agent_name=agent_name
+).responses
+
+response = responses.create(
+    input="Do you have a blue trail running jacket in medium?"
+)
+print(response.output_text)
+```
+
+This is useful during development because it separates agent quality problems from routing problems. If the inventory specialist gives a poor answer when called directly, adding a handoff agent will not fix it.
+
+## Step 3: Add application-level handoff routing
+
+A dedicated handoff agent classifies the request and lets the application dispatch to the appropriate specialist. The small sample also asks the model to return a confidence value and a reason for its decision.
+
+Run:
+
+```powershell
+python code\02_handoff_router.py
+```
+
+The script now shows the complete interaction: the user request goes to the handoff agent, the application uses the returned `target` to select the loyalty specialist, and only that specialist's answer is printed. The specialist instructions explicitly tell it not to describe the routing process or mention other agents.
+
+With the sample `TEST_PROMPT` in `.env.example`, the output is similar to:
+
+```text
+User request: Can I use my loyalty points on this order?
+Handoff agent is classifying the request...
+--- Routing specialist is answering ---
+{
+  "target": "loyalty",
+  "confidence": 0.99,
+  "reason": "The user is asking about using loyalty points on an order, which is a loyalty program question."
+}
+Routing to: loyalty
+
+--- Loyalty specialist is answering ---
+Yes—**if the store's loyalty program allows points redemption on this type of order**, you can usually apply them at checkout.
+
+A few common limits to check:
+- **Minimum order value** may be required
+- **Not all items** may be eligible
+- Points may not be usable with certain **promotions or discounts**
+- There may be a **maximum number of points** you can apply per order
+
+I can help you figure it out. If you want, send me:
+1. the **store or brand**, and
+2. whether you're checking out **online or in-store**
+
+and I'll explain how loyalty points typically work for that order.
+```
+
+The router selects one specialist. If you use a question with two intents, such as both product availability and payment with points, the model may choose inventory as the primary intent. Use the loyalty-only prompt above when following this routing example.
+
+The handoff response is deliberately structured:
+
+```json
+{
+  "target": "loyalty",
+  "confidence": 0.99,
+  "reason": "The user is asking about using loyalty points on an order, which is a loyalty program question."
+}
+```
+
+In plain language, the flow is:
+
+1. The handoff agent reads the question and says, “I am 99% confident that the loyalty specialist should handle this.”
+2. The application reads `target: "loyalty"` and checks that it is an allowed specialist.
+3. The application sends the original question to the loyalty agent.
+4. The loyalty agent produces the answer shown to the user.
+
+The `99%` is the handoff model's own confidence estimate. In the sample, it is printed for visibility and does not stop the dispatch; production code can require a minimum confidence and use a fallback when the estimate is too low.
+
+Because this is a model-generated estimate, treat it as a routing signal rather than a guarantee that the classification is correct.
+
+The application validates `target` before invoking an agent. Do not blindly use a model-generated agent name as a dictionary key or service endpoint. A production handler should also define a confidence threshold and a safe fallback response.
+
+Routing is not the same as collaboration:
+
+| Pattern | Meaning |
+| --- | --- |
+| Routing or handoff | Select one specialist for the request. |
+| Sequential orchestration | Pass one agent's output to another agent. |
+| Concurrent orchestration | Ask independent specialists to assess the same input. |
+
+## Step 4: Sequential orchestration
+
+Some tasks have a dependency: one specialist must produce a draft before another specialist can inspect it. Here, the shopper specialist receives the jacket recommendation request and writes the first draft. The reviewer specialist then receives that draft inside a new prompt, checks its assumptions and claims, and writes the revised answer. The reviewer is not answering the original request independently; it is reviewing the shopper specialist's output.
+
+Run:
+
+```powershell
+python code\03_sequential_review.py
+```
+
+The flow is:
+
+```mermaid
+flowchart LR
+    Request["Customer request"] --> Analyst["Specialist creates draft"]
+    Analyst --> Reviewer["Reviewer checks draft"]
+    Reviewer --> Result["Final response"]
+```
+
+Unlike the previous handoff example, this workflow does not use the routing agent. The application already knows the fixed sequence: send the request to the shopper specialist, then send that specialist's draft to the reviewer specialist. A routing agent is useful when the application must choose which specialist should own an incoming request; it is unnecessary when every request follows the same analyst-then-reviewer path.
+
+The output makes both stages visible:
+
+```text
+--- Shopper specialist is answering ---
+Draft:
+A good recommendation for this runner/hiker is a **lightweight waterproof trail running jacket** with:
+
+- **Breathable waterproof fabric**: helps keep rain out without overheating on runs
+- **Packable design**: easy to stow in a vest or daypack
+- **Adjustable hood and cuffs**: better fit in wind and rain
+- **Reflective details**: useful for early morning or evening runs
+- **Slightly longer hem**: helpful for hiking and added coverage
+- **Durable water repellent (DWR) finish**: sheds light rain and trail spray
+
+### Why this fits the use case
+This person needs a jacket that works for **two activities**:
+- **Running**: needs to be lightweight, breathable, and non-bulky
+- **Weekend hiking**: needs enough weather protection and durability for longer wear
+
+A trail running jacket is usually the best compromise because it prioritizes **mobility and ventilation** more than a heavy rain shell, while still offering waterproof protection for wet weather.
+
+### Assumptions
+I'm assuming:
+1. The runner wants a jacket for **rain protection**, not just wind resistance.
+2. They prefer something that can be used **on both runs and hikes**, so versatility matters.
+3. Conditions are likely **light to moderate rain**, not extended alpine downpours.
+4. They care about **comfort while moving fast**, so weight and breathability are important.
+
+### If you want to narrow it further
+- For **mostly running**: choose the **lightest, most breathable** option
+- For **more hiking than running**: choose a jacket with **more durability, pockets, and coverage**
+- For **very wet climates**: prioritize **fully seam-sealed waterproof construction**
+
+If you want, I can also turn this into a **short product recommendation blurb** or a **comparison between two jacket types**.
+
+--- Reviewer specialist is answering ---
+Review:
+A good recommendation for this runner/hiker is a **lightweight waterproof trail running jacket**, especially if they want one jacket for both running and weekend hiking.
+
+### Why it fits
+- **Lightweight and packable**: easier to carry and less bulky for runs
+- **Breathable waterproof fabric**: helps reduce overheating, though no waterproof jacket will stay fully dry or perfectly breathable in all conditions
+- **Adjustable hood and cuffs**: can improve fit in wind and rain
+- **Reflective details**: useful for low-light runs
+- **Slightly longer hem**: can add coverage for hiking
+- **DWR finish**: helps shed light rain and trail spray, but it is not the same as full waterproofing
+
+### Best use case
+This is a reasonable compromise if the person needs:
+- **Running**: low weight, mobility, and ventilation
+- **Hiking**: basic weather protection and enough durability for occasional longer wear
+
+### Assumptions
+This recommendation assumes:
+1. They want **rain protection**, not just wind resistance.
+2. They want **one jacket for both activities**.
+3. They expect **light to moderate rain**, not prolonged severe weather.
+4. They care about **comfort while moving** more than maximum storm protection.
+
+### If narrowing the choice
+- **Mostly running**: prioritize the lightest, most breathable option
+- **More hiking than running**: prioritize durability, pockets, and coverage
+- **Very wet conditions**: look for **fully seam-sealed construction** and a higher level of weather protection
+```
+
+The important detail is how the second agent receives the first agent's work. The reviewer does not automatically know what the shopper specialist said. The application takes the draft, adds instructions such as “check the assumptions and unsupported claims,” and sends that complete text as a new request:
+
+```python
+review_prompt = (
+    "Review this draft for unsupported claims and missing assumptions. "
+    "Return a corrected, concise version.\n\nDRAFT:\n"
+    + response_text(draft)
+)
+review = run_agent(project_client, AGENT_NAMES["reviewer"], review_prompt)
+```
+
+This makes the workflow easy to understand: the first agent writes, the application passes its text to the second agent, and the second agent reviews it. In a larger application, you can add other information to that second request, such as a product ID or customer request, so the reviewer has the context it needs.
+
+For production code, you can later replace the manual prompt construction with a declarative orchestration workflow such as Microsoft Agent Framework's `SequentialBuilder`. The important idea remains the same: the first agent's output becomes the second agent's input.
+
+## Step 5: Concurrent orchestration
+
+Sometimes several agents can work on the same question without waiting for one another. For example, a customer may ask about a jacket, its availability, and whether loyalty points can be used. The shopper, inventory, and loyalty specialists can each investigate their own part at the same time.
+
+This is called **concurrent orchestration**. The application sends the request to all three specialists, waits for their answers, and then collects the results. The agents do not automatically see one another's answers, and there is no routing decision that picks only one of them. This is useful when you want several independent opinions or facts before deciding what to show the user.
+
+In practical terms, the difference from the previous example is:
+
+- **Sequential**: shopper answers first, then reviewer reads the shopper's answer.
+- **Concurrent**: shopper, inventory, and loyalty answer independently at the same time.
+
+The sample prints a heading for each responding specialist, so you can see which part of the answer came from which agent. It does not yet combine the three answers into one polished response; a real application could add a final summarizer after all three responses arrive.
+
+When you run the script, it also prints a clear “Running specialists in parallel” message and identifies each later answer as a **parallel result**. The order in which those results are displayed is not proof of the execution order: all three requests have already been started together.
+
+Each specialist is also given a narrow instruction for its part of the question. The shopper specialist discusses suitability and alternatives, the inventory specialist discusses stock and delivery, and the loyalty specialist discusses points and membership rules. This prevents every agent from repeating the entire answer when the customer asks about several topics at once.
+
+Run:
+
+```powershell
+python code\04_parallel_review.py
+```
+
+The Python example uses `ThreadPoolExecutor` to start the three synchronous requests together. This means the application does not wait for the shopper response to finish before starting the inventory request. In an asynchronous web application, the same idea can be implemented with async tasks.
+
+When using this pattern in a real application, also decide:
+
+- How long to wait before treating a specialist as unavailable.
+- Whether one failed specialist should prevent the other answers from being used.
+- How many agents may run at the same time, to control cost and capacity.
+- How to combine the separate answers into one response when the user does not need to see the internal analysis.
+
+## Step 6: Full example
+
+The full sample creates the agents, sends a user request to the handoff agent, validates the classification, and invokes the selected specialist.
+
+```powershell
+python code\full_example.py
+```
+
+Use a unique `AGENT_PREFIX` in `.env`:
+
+```powershell
+python code\full_example.py
+```
+
+The complete source is available here:
+
+- [00_create_agents.py](code/00_create_agents.py)
+- [01_invoke_specialist.py](code/01_invoke_specialist.py)
+- [02_handoff_router.py](code/02_handoff_router.py)
+- [03_sequential_review.py](code/03_sequential_review.py)
+- [04_parallel_review.py](code/04_parallel_review.py)
+- [full_example.py](code/full_example.py)
+- [common.py](code/common.py)
+- [requirements.txt](code/requirements.txt)
+- [.env.example](code/.env.example)
+
+## Production notes for hosted agents
+
+When this orchestration is deployed as a hosted agent, Foundry supplies the runtime, scaling, identity, and observability. The orchestration code still owns the workflow behavior. For hosted agents that consume Foundry-managed tools, plan the Toolbox/MCP boundary explicitly rather than assuming tools attached to a prompt-agent definition will automatically be available inside the hosted process.
+
+For manager-style or Magentic workflows, always configure maximum rounds and stall limits. Add human approval before actions that change production systems, such as placing orders, changing accounts, or writing records.
 
 ## Cleanup
 
-Remove the A2A endpoint from the specialist agent:
+The cleanup script deletes only agents whose names use the configured prefix:
 
-```python
-# Disable A2A endpoint
-project_client.agents.update_details(
-    agent_name="specialist-agent",
-    agent_endpoint=None  # Clear endpoint config
-)
-
-print("✓ A2A endpoint removed")
-
-# Optionally, delete agents
-project_client.agents.delete_agent(agent_name="orchestrator-agent")
-project_client.agents.delete_agent(agent_name="specialist-agent")
-
-print("✓ Multi-agent orchestration cleaned up")
+```powershell
+python code\cleanup.py
 ```
 
-## What to Try Next
+It calls the current SDK method:
 
-1. **Cascade multiple specialists**: Create a chain where orchestrator → specialist A → specialist B
-2. **Tool selection logic**: Use tool choice (`"auto"`, `"required"`, or specify by name) to control when the specialist is called
-3. **Error handling**: Add retry loops if A2A calls fail (e.g., specialist timeout)
-4. **Hybrid multi-region**: Call specialists in different Foundry projects via separate A2A connections
-5. **Mixing modalities** (future): When Foundry A2A supports multimodal, pass images or voice between agents
+```python
+project_client.agents.delete(
+    agent_name=name,
+    force=True,
+)
+```
 
-## Key Takeaways
+Review `AGENT_PREFIX` before running cleanup. Never use a broad prefix in a shared project.
 
-- **A2A Pattern**: Native way for Foundry agents to call each other as tools
-- **Two Roles**: Orchestrator (caller) with `A2APreviewTool`, Specialist (target) with `AgentEndpointConfig`
-- **Authentication**: Entra ID–based, project-scoped connections
-- **Hosted Agents**: Use `A2APreviewToolboxTool` + Microsoft Agent Framework for the same pattern
-- **Scale**: Coordinate dozens of agents across projects without custom middleware
-- **Limitations**: Text-only, preview feature, not yet production-ready
+## Key takeaways
 
-Next up: **Part 10** – Deploying agents to production with versioning, blue-green rollouts, and environment management.
+- Multiple agents are useful when responsibilities, tools, or permissions differ.
+- A shared initializer keeps specialist creation consistent.
+- A handoff agent should classify and return structured data; the application should validate and dispatch.
+- Sequential orchestration passes an explicit result from one agent to another.
+- Concurrent orchestration is appropriate only when the specialist calls are independent.
+Next up: **Part 10** - Let agents communicate across application and deployment boundaries.
