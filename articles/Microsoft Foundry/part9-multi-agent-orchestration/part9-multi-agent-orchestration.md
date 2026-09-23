@@ -1,5 +1,5 @@
 ---
-title: "Microsoft Foundry SDK: Part 9 – Multi-Agent Orchestration"
+title: "Multi-Agent Orchestration"
 excerpt: "Build coordinated Microsoft Foundry agent systems with the Agent-to-Agent pattern, specialist agents, and practical Python orchestration examples."
 slug: microsoft-foundry/part9-multi-agent-orchestration
 artifactPath: "Microsoft Foundry/part9-multi-agent-orchestration"
