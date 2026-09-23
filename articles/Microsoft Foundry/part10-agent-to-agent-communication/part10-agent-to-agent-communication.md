@@ -1,5 +1,5 @@
 ---
-title: "Microsoft Foundry SDK: Part 10 - How Agents Communicate"
+title: "How Agents Communicate"
 excerpt: "Build up from a direct A2A call to a Foundry agent with the A2A tool and a RemoteA2A connection."
 slug: microsoft-foundry/part10-agent-to-agent-communication
 artifactPath: "Microsoft Foundry/part10-agent-to-agent-communication"
