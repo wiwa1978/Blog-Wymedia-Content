@@ -3,11 +3,11 @@ title: "From Notebook to Production"
 excerpt: "Move Microsoft Foundry agents from notebooks to reliable production operations with versioning, environment promotion, safe rollouts, and guardrails."
 slug: microsoft-foundry/part11-from-notebook-to-production
 artifactPath: "Microsoft Foundry/part11-from-notebook-to-production"
-tags: []
+tags: ["azure", "ai-foundry", "sdk", "python", "agents"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":11}
 publishAt: "2026-08-13T15:55:00.000Z"
 ---
-# Microsoft Foundry SDK: Part 10 – From Notebook to Production
+# Microsoft Foundry SDK: Part 11 – From Notebook to Production
 
 You've learned to build agents, orchestrate multi-agent systems, and deploy to production infrastructure (parts 1–9). But production systems need more: **safe rollout strategies, configuration management across environments, telemetry-driven decision-making, and guardrails against breaking changes**.
 
@@ -16,7 +16,7 @@ Parts [5](/blog/microsoft-foundry/part5-monitoring)–[7](/blog/microsoft-foundr
 ## Prerequisites
 
 - Foundry project with `azure-ai-projects` >= 2.3.0
-- A deployed Hosted agent (from Part 9)
+- A deployed Hosted agent from Part 8
 - Familiarity with parts 1–3 (agents, tools, observability)
 - Three environments set up: **dev**, **staging**, **prod** (can be separate projects or same project with version naming)
 
@@ -551,9 +551,9 @@ The ten-part series has taken you from "Hello Agent" to production-grade orchest
 5. **Part 5** – Monitoring: Traces, latency, tokens, and tool calls
 6. **Part 6** – Evaluations: Datasets, evaluators, runs, and continuous evaluation
 7. **Part 7** – Guardrails: Model and agent RAI policies
-8. **Part 8** – Scale: Multi-agent orchestration via A2A, specialist coordination
-9. **Part 9** – Infrastructure: Hosted agents, versioning, deployment automation
-10. **Part 10** – Operations: Rollout strategies, environment promotion, production guardrails
+8. **Part 8** – Runtime: Build and host a single code agent
+9. **Part 9** – Scale: Multi-agent orchestration via A2A, specialist coordination
+11. **Part 11** – Operations: Rollout strategies, environment promotion, production guardrails
 
 From here:
 
@@ -570,11 +570,11 @@ Happy shipping! 🚀
 
 The complete working example for this post is available on GitHub:
 
-**[part10_from_notebook_to_production.py](code/part10_from_notebook_to_production.py)**
+**[part11_from_notebook_to_production.py](code/part11_from_notebook_to_production.py)**
 
 Run it locally:
 ```bash
-python part10_from_notebook_to_production.py
+python part11_from_notebook_to_production.py
 ```
 
 ---
