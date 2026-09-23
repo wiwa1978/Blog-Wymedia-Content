@@ -22,6 +22,8 @@ This post is the "rest of the SDK": a rundown of the tool-related API calls Foun
 
 Every snippet builds on the project you created in part 1 and prints out what it created, so you can see exactly what's happening.
 
+In [Part 3 - Build a RAG agent with Foundry IQ](/blog/microsoft-foundry/part3-foundryiq-rag) we take the knowledge story further: instead of a small managed vector store, we build an Azure AI Search index from a PDF, turn it into a Foundry IQ knowledge base, and connect that knowledge base to an agent through MCP.
+
 ## Prerequisites
 
 ```bash
@@ -853,7 +855,7 @@ print("Cleaned up agent and memory store")
 
 Every tool type here — web search, file search, function tools, MCP, toolboxes, memory — plugs into the same `tools=[...]` list on `PromptAgentDefinition` you learned in part 1. Once you're comfortable with that one pattern, adding new capabilities to an agent is mostly a matter of picking the right `Tool` class and grounding it with a resource (a vector store, a connection, a toolbox, a memory store). Start small, verify each tool in isolation with `print()` statements like the ones above, then compose them together once you trust each piece.
 
-Next up: **[Part 3 – Grounding Agents with Knowledge (Foundry IQ)](/blog/microsoft-foundry/part3-knowledge-foundryiq)** — connecting an agent to multiple enterprise data sources behind a single agentic retrieval engine.
+Next up: **[Part 3 – Build a RAG agent with Foundry IQ](/blog/microsoft-foundry/part3-foundryiq-rag)** — turning a PDF into an Azure AI Search knowledge base and connecting it to a Foundry agent through MCP.
 
 ---
 

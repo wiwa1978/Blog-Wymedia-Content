@@ -1,6 +1,0 @@
-azure-ai-projects>=2.3.0
-azure-identity
-openai
-python-dotenv
-mcp==2.2.0
-httpx2
