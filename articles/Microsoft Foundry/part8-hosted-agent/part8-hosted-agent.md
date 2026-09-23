@@ -5,7 +5,7 @@ slug: microsoft-foundry/part8-hosted-agent
 artifactPath: "Microsoft Foundry/part8-hosted-agent"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents", "hosted-agents", "mcp"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":8}
-publishAt: "2026-09-29T18:01:00.000Z"
+publishAt: "2026-08-01T18:01:00.000Z"
 ---
 # Hosted Agents
 
