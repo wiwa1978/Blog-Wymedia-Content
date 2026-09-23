@@ -90,17 +90,39 @@ python .\01_a2a_call_direct.py
 A successful call resolves the card, sends the request, and returns a completed task:
 
 ```text
+Project endpoint: https://blog-wymedia-resource.services.ai.azure.com/api/projects/blog-wymedia-project
+Loyalty A2A endpoint: https://blog-wymedia-resource.services.ai.azure.com/api/projects/blog-wymedia-project/agents/orch-loyalty/endpoint/protocols/a2a
+User request: Can I use my loyalty points to buy the blue trail jacket in medium?
+
 --- Resolving agent card ---
 Agent card resolved: orch-loyalty
 --- Sending message to remote agent ---
 --- Agent response ---
 task {
+  id: "resp_0ff80d2ba49a21d6006ab41aebf0508190ae524e5d10934625"
+  context_id: "ctxt_a9fa28f505814372b1c7648295ec74b7"
   status {
     state: TASK_STATE_COMPLETED
+    timestamp {
+      seconds: 1790188269
+    }
   }
   artifacts {
+    artifact_id: "msg_0ff80d2ba49a21d6006ab41aec85708190a88996d7c844cef7"
     parts {
-      text: "I can help with that, but I can’t see your account balance ..."
+      text: "You may be able to use loyalty points toward that purchase, but I can’t see your account balance or confirm item eligibility from here.
+
+In general, whether you can use points depends on:
+- your available points balance
+- whether the blue trail jacket in medium is eligible for points redemption
+- any restrictions on combining points with other discounts or promotions
+
+If you want, I can help you figure out:
+- how loyalty points usually apply at checkout
+- whether points can be used on sale items
+- how to check the jacket’s eligibility in your account or cart
+
+If you share the store or loyalty program name, I can give more specific guidance."
     }
   }
 }
@@ -166,6 +188,36 @@ Run it only after the connection and permissions are ready:
 python .\02_a2a_call_with_tool.py
 ```
 
+A successful run creates the caller version, routes the request to the loyalty specialist, and returns the remote agent's answer:
+
+```text
+Looking up A2A connection: loyalty-agent-connection
+  Connection ID: /subscriptions/c396918f-565f-458c-87b5-4dfe9b6959a8/resourceGroups/RG-BLOG-WYMEDIA/providers/Microsoft.CognitiveServices/accounts/blog-wymedia-resource/projects/blog-wymedia-project/connections/loyalty-agent-connection
+  Connection type: RemoteA2A
+
+Caller agent: orcha2a-caller (version 9)
+User request: Can I use my loyalty points to buy the blue trail jacket in medium?
+Routed to specialist: loyalty
+Using A2A connection: loyalty-agent-connection
+--- Agent response ---
+
+Yes—if the blue trail jacket in medium is eligible for loyalty redemption, you can
+usually apply points toward the purchase.
+
+I can’t confirm your exact redemption amount or remaining balance without your account
+details, but in general:
+- If your points cover the full price, you can pay entirely with points.
+- If not, you’d use points for part of it and pay the rest another way.
+
+If you want, I can also help you check:
+1. whether that jacket is eligible, and
+2. how many points you’d need.
+
+Deleted temporary caller version 9.
+```
+
+The version number is assigned by Foundry and can differ between runs. The script deletes the temporary version after the response.
+
 ## Why the two levels can behave differently
 
 The direct script authenticates as the local user through `DefaultAzureCredential`. The `A2ATool` call runs inside Foundry and uses the identity configured on the `RemoteA2A` connection. Therefore, a successful direct call does not prove that the routed call is authorized.
@@ -188,7 +240,7 @@ Invoke-RestMethod `
   -Headers @{ Authorization = "******" }
 ```
 
-If this succeeds but the A2A tool still returns 404, the remaining issue is in the Foundry connection identity, target, or role assignment—not in the basic A2A message flow.
+If this succeeds but the A2A tool returns 404 or 403, the remaining issue is in the Foundry connection identity, target, or role assignment—not in the basic A2A message flow. In this example, assigning **Foundry Agent Consumer** to the caller agent identity on the target project allowed the managed call to complete.
 
 ## Summary
 
@@ -202,3 +254,9 @@ Build the integration in this order:
 The direct example proves that the remote endpoint and protocol work. The A2A tool adds a Foundry-managed caller on top of that known-good foundation. Keeping those steps separate makes failures easier to diagnose and gives the reader a useful result at every stage.
 
 For production, add timeouts, retries with backoff, structured correlation IDs, health checks, permission reviews, and monitoring on both caller and target.
+
+## Microsoft Learn resources
+
+- [Connect to an A2A agent endpoint from Foundry Agent Service](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/agent-to-agent) — configure a `RemoteA2A` connection and use the `A2ATool`.
+- [Enable an A2A endpoint on a Foundry agent](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/enable-agent-to-agent-endpoint) — expose the loyalty agent and verify its agent card.
+- [Agent2Agent (A2A) authentication](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-to-agent-authentication) — understand agent identities, audiences, authentication modes, and RBAC troubleshooting.
