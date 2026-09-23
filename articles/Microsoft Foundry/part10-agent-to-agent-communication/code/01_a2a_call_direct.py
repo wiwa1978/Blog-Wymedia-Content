@@ -22,7 +22,11 @@ async def main():
     # Load configuration
     project_endpoint = os.getenv("FOUNDRY_PROJECT_ENDPOINT")
     loyalty_endpoint = os.getenv("A2A_LOYALTY_ENDPOINT")
-    test_prompt = os.getenv("LOYALTY_TEST_PROMPT", "Can I use my loyalty points to buy the blue trail jacket in medium?")
+    test_prompt = os.getenv(
+        "LOYALTY_TEST_PROMPT",
+        "Can I use my loyalty points to buy the blue trail jacket in medium?",
+    )
+    agent_card_path = os.getenv("A2A_AGENT_CARD_PATH", "agentCard/v0.3")
 
     if not project_endpoint or not loyalty_endpoint:
         raise ValueError("Missing FOUNDRY_PROJECT_ENDPOINT or A2A_LOYALTY_ENDPOINT in .env")
@@ -44,7 +48,7 @@ async def main():
         resolver = A2ACardResolver(
             httpx_client=httpx_client,
             base_url=loyalty_endpoint,
-            agent_card_path="agentCard/v0.3",
+            agent_card_path=agent_card_path,
         )
         agent_card = await resolver.get_agent_card()
         print(f"Agent card resolved: {agent_card.name}")

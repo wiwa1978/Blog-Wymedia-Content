@@ -1,4 +1,5 @@
-azure-ai-projects>=2.6.0
+azure-ai-projects>=2.5.0
 azure-identity
 python-dotenv
 httpx
+a2a-sdk==1.0.2
