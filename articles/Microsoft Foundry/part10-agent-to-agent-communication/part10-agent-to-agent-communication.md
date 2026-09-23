@@ -7,15 +7,6 @@ tags: ["azure", "ai-foundry", "sdk", "python", "agents", "a2a", "mcp"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":10}
 publishAt: "2026-08-09T16:54:00.000Z"
 ---
----
-title: "Microsoft Foundry SDK: Part 10 - How Agents Communicate"
-excerpt: "Use the Part 9 retail example to understand direct calls, shared application state, MCP tools, and Agent2Agent communication across deployment boundaries."
-slug: microsoft-foundry/part10-agent-to-agent-communication
-artifactPath: "microsoft-foundry/part10-agent-to-agent-communication"
-tags: ["azure", "ai-foundry", "sdk", "python", "agents", "a2a", "mcp"]
-series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":10}
-publishAt: "2026-09-23T18:00:00.000Z"
----
 # Microsoft Foundry SDK: Part 10 - How Agents Communicate
 
 In Part 9, all of the agents lived inside one application. The application called the handoff agent, selected a specialist, and passed text from one specialist to another.
