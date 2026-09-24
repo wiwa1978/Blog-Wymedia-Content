@@ -5,7 +5,7 @@ slug: foundry-use-cases/text-to-image
 articleId: 42d9d604-3848-42d3-9ce0-8f3309486a7f
 artifactPath: "Foundry Use Cases/text-to-image"
 tags: ["Microsoft Foundry", "Azure AI", "Python", "image generation"]
-series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":9}
+series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":12}
 publishAt: "2026-09-15T13:26:00.000Z"
 ---
 # Getting Started: Text to Image with Microsoft Foundry
