@@ -1,5 +1,5 @@
 ---
-title: "Foundry use case: realtime voice from a microphone"
+title: "Realtime voice from a microphone"
 excerpt: "Build a command-line voice assistant that captures microphone audio and plays responses from a Microsoft Foundry realtime GPT deployment."
 slug: foundry-use-cases/realtime-voice-microphone
 articleId: 2e51c9f4-2ef1-45bd-9de1-379d517ef4a2
