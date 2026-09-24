@@ -1,5 +1,5 @@
 ---
-title: "text to image"
+title: "Text to Image"
 excerpt: "Text-to-image generation turns a written description into a picture — useful for marketing assets, mockups, illustrations, or just exploring ideas without opening a design tool. With Microsoft Foundry, generating an image is a single API call against your project's OpenAI-compatible image endpoint."
 slug: foundry-use-cases/text-to-image
 articleId: 42d9d604-3848-42d3-9ce0-8f3309486a7f
