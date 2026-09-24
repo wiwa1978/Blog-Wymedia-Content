@@ -1,5 +1,5 @@
 ---
-title: "Foundry use case: image to image"
+title: "Image to Image"
 excerpt: "Transform an existing image with a text instruction using Microsoft Foundry, Python, Entra ID authentication, and the OpenAI-compatible image edits API."
 slug: foundry-use-cases/image-to-image
 articleId: e4ad8d43-d6a3-4075-83ba-90ca9087715f
