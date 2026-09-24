@@ -14,12 +14,12 @@ Text-to-image generation turns a written description into a picture — useful f
 
 ## What you need
 
-1. A **Foundry project** with an image-capable model deployment (e.g. `gpt-image-1`).
+1. A **Foundry project** with an image-capable model deployment (e.g. `MAI-Image-2.6` or `gpt-image-1`).
 2. **Azure CLI login** (`az login`) with the *Azure AI User* role on the project — or any identity `DefaultAzureCredential` can pick up. No API keys to manage.
-3. Two Python packages:
+3. The Python packages listed in [`code/requirements.txt`](code/requirements.txt):
 
 ```bash
-pip install openai azure-identity
+pip install -r Code/requirements.txt
 ```
 
 ## The core idea
@@ -27,46 +27,61 @@ pip install openai azure-identity
 Generating an image against a Foundry deployment boils down to four steps:
 
 1. **Authenticate** — get a token provider Foundry trusts.
-2. **Create an OpenAI client** — point the standard `openai` SDK's `base_url` at your Foundry endpoint instead of `api.openai.com`.
-3. **Call `images.generate`** — same shape as calling OpenAI directly, just pointed at your deployment.
-4. **Decode and save** — the response returns the image as base64; decode it to bytes and write it to a file.
+2. **Choose the image route** — MAI image deployments use `/mai/v1/images/generations`; Azure OpenAI image deployments use `/openai/v1/images/generations`.
+3. **POST the prompt** — send the deployment name, prompt, and dimensions to the right Foundry route.
+4. **Decode and save** — the response returns the image as base64, or occasionally as a temporary URL; save the bytes to a file.
 
 ```python
-from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-from openai import OpenAI
+import os
+from pathlib import Path
+from urllib.parse import urlsplit
 
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+from dotenv import load_dotenv
+import requests
+
+load_dotenv(Path(".env"))
+
+project_url = urlsplit(os.environ["PROJECT_ENDPOINT"])
+origin = f"{project_url.scheme}://{project_url.netloc}"
+model = os.environ["MODEL"]
+prompt_file = os.getenv("PROMPT_FILE")
+prompt = Path(prompt_file).read_text(encoding="utf-8").strip() if prompt_file else os.environ["PROMPT"]
+width = int(os.getenv("WIDTH", "1024"))
+height = int(os.getenv("HEIGHT", "1024"))
 token_provider = get_bearer_token_provider(
-    DefaultAzureCredential(), "https://ai.azure.com/.default"
+    DefaultAzureCredential(),
+    "https://cognitiveservices.azure.com/.default",
 )
-client = OpenAI(
-    base_url="https://<resource-name>.services.ai.azure.com/openai/v1",
-    api_key=token_provider,
-)
-response = client.images.generate(
-    model="gpt-image-1",
-    prompt="A watercolor painting of a lighthouse at sunset",
-    size="1024x1024",
+response = requests.post(
+    f"{origin}/mai/v1/images/generations",
+    headers={"Authorization": f"Bearer {token_provider()}"},
+    json={"model": model, "prompt": prompt, "width": width, "height": height},
+    timeout=180,
 )
 ```
 
-`response.data[0].b64_json` is your image, base64-encoded — decode it with `base64.b64decode(...)` and write the bytes to a `.png` file.
+The full sample includes the matching Azure OpenAI route for `gpt-image-*` deployments and handles both base64 and URL image responses.
 
 ## The full script
 
-The attached [`text_to_image.py`](/articles/foundry-use-cases/text-to-image/code/text_to_image.py) wraps this into a runnable script: set your `ENDPOINT`, `MODEL`, and `PROMPT` at the top of the file, then run it.
+The attached [`text_to_image.py`](code/text_to_image.py) wraps this into a runnable script. Copy [`code/.env.example`](code/.env.example) to `code/.env` and set your `PROJECT_ENDPOINT` and image deployment `MODEL`. Use an MAI deployment such as `MAI-Image-2.6`, or later switch the same setting to an Azure OpenAI image deployment such as `gpt-image-1`. If the model name contains `mai-image`, the script calls `/mai/v1/images/generations`; otherwise it calls `/openai/v1/images/generations`.
+
+For short prompts, set `PROMPT` directly in `.env`. For longer multi-line prompts, especially prompts that contain quotation marks, save the text in a file such as `prompt.txt` and set `PROMPT_FILE=prompt.txt`.
+
+`OUTPUT_FILE` is treated as the base filename. The script appends the deployment name and timestamp before the extension, for example `generated_image_MAI-Image-2.6_20260924_160530.png`.
 
 ```bash
 python Code/text_to_image.py
 ```
 
 ```
-Saved image to generated_image.png
+Saved image to generated_image_MAI-Image-2.6_20260924_160530.png
 ```
 
-## What we intentionally left out
+## Microsoft Learn resources
 
-The production Text to Image use case in this repo layers a lot on top of these fundamentals: a model picker across multiple image providers (OpenAI, FLUX, MAI), content-policy error handling with user-friendly messages, saving generated images to a shared gallery, conversation persistence, and telemetry. None of that changes the core mechanic shown above — it's still one call to `images.generate`. Once you're comfortable with this minimal version, adding a different `size`, richer prompts, or looping over several prompts is a small step from here.
-
-## Try it yourself
-
-Open `Code/text_to_image.py`, set `ENDPOINT` and `MODEL` to your own Foundry project and image deployment, and run it — you'll have a generated PNG on disk in seconds.
+- [Deploy and use MAI image models in Microsoft Foundry](https://learn.microsoft.com/azure/foundry/foundry-models/how-to/use-foundry-models-mai-image) — deploy MAI image models and call the `/mai/v1/images/generations` API.
+- [MAI image API endpoints](https://learn.microsoft.com/azure/foundry/foundry-models/how-to/use-foundry-models-mai-image#api-endpoints) — reference the MAI image generations and edits endpoint shapes.
+- [Generate images with Azure OpenAI in Azure AI Foundry Models](https://learn.microsoft.com/azure/ai-foundry/openai/dall-e-quickstart#create-a-new-python-application) — quickstart for `gpt-image-*` image generation.
+- [Azure OpenAI image generation models](https://learn.microsoft.com/azure/foundry/openai/how-to/dall-e#quickstart) — REST API setup and image-generation guidance for Azure OpenAI deployments.
