@@ -1,5 +1,5 @@
 ---
-title: "Foundry use case: realtime voice from a WAV file"
+title: "Rrealtime voice from a WAV file"
 excerpt: "Send a prerecorded WAV file to a Microsoft Foundry realtime GPT deployment and save the spoken response as audio."
 slug: foundry-use-cases/realtime-voice-mp3
 articleId: bb6b5fb7-2673-4e18-8090-8bbef33bc344
