@@ -6,7 +6,7 @@ articleId: 7d4cfdb3-d4e7-4699-a44a-f3aa85a4b93a
 artifactPath: "Microsoft Foundry/part12-from-notebook-to-production"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":12}
-publishAt: "2026-08-24T13:20:00.000Z"
+publishAt: "2026-07-22T15:55:00.000Z"
 ---
 # Microsoft Foundry SDK: Part 12 – From Notebook to Production
 
@@ -540,33 +540,6 @@ Before shipping to production, verify:
 - **Guardrails**: Enable RAI checks in production; version instructions in git
 - **Runbooks**: Document rollback procedures and on-call escalation
 - **Stability-First Mindset**: Keep old versions active; monitor for 24–48h before cleanup
-
-## Closing Thoughts
-
-The ten-part series has taken you from "Hello Agent" to production-grade orchestration:
-
-1. **Part 1** – Foundations: Project, agent, tools, responses
-2. **Part 2** – Ecosystem: MCP, toolbox, memory stores, advanced tools
-3. **Part 3** – Knowledge: Grounding agents in enterprise data with Foundry IQ
-4. **Part 4** – Knowledge at scale: Multiple documents, token-aware chunking, and access control
-5. **Part 5** – Monitoring: Traces, latency, tokens, and tool calls
-6. **Part 6** – Evaluations: Datasets, evaluators, runs, and continuous evaluation
-7. **Part 7** – Guardrails: Model and agent RAI policies
-8. **Part 8** – Runtime: Build and host a single code agent
-9. **Part 9** – Scale: Multi-agent orchestration via A2A, specialist coordination
-10. **Part 10** – Orchestration: Microsoft Agent Framework builders for handoff, sequential, and concurrent workflows
-11. **Part 11** – Communication: Agent-to-Agent protocol between independently hosted agents
-12. **Part 12** – Operations: Rollout strategies, environment promotion, production guardrails
-13. **Part 13** – Insights: Find recurring agent problems in production traces
-
-From here:
-
-- **Build multi-region agents** across Azure geographies for DR
-- **Integrate with Foundry chains** for agentic workflows beyond single-turn requests
-- **Adopt Foundry frameworks** (Microsoft Agent Framework) for enterprise voice & video
-- **Join the Foundry community** – share patterns, ask questions, contribute
-
-Happy shipping! 🚀
 
 ---
 
