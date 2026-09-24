@@ -6,7 +6,7 @@ articleId: 685b19d3-bd8a-4c25-9673-dfea3d152b0c
 artifactPath: "Foundry Use Cases/text-to-speech"
 tags: ["Microsoft Foundry", "Azure AI", "Python", "text to speech"]
 series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":4}
-publishAt: "2026-09-27T16:00:00.000Z"
+publishAt: "2026-09-27T14:48:00.000Z"
 ---
 # Text to speech with Microsoft Foundry audio completions
 
@@ -122,7 +122,3 @@ Audio completions support voices including `alloy`, `ash`, `ballad`, `coral`, `e
 - [Quickstart: Get started with Azure OpenAI audio generation](https://learn.microsoft.com/azure/foundry/openai/audio-completions-quickstart)
 - [Audio capabilities in Azure OpenAI](https://learn.microsoft.com/azure/foundry-classic/openai/concepts/audio)
 - [Microsoft Foundry documentation](https://learn.microsoft.com/azure/foundry/)
-
-## Next steps
-
-For production applications, validate the requested model and voice at startup, enforce an input length limit, and store generated audio in durable storage rather than the local working directory.
