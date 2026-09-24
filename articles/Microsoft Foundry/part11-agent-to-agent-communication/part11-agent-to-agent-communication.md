@@ -1,5 +1,5 @@
 ---
-title: "Microsoft Foundry SDK: Part 11 - Agent2Agent Communication Between Hosted Agents"
+title: "Agent2Agent Communication Between Hosted Agents"
 excerpt: "Learn how two independently hosted Microsoft Foundry agents communicate through the Agent2Agent protocol, first directly and then through the Foundry A2A tool."
 slug: microsoft-foundry/part11-agent-to-agent-communication
 articleId: c619ffd1-c444-4c28-bf26-34420aab4937
