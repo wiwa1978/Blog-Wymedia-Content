@@ -15,8 +15,10 @@ load_dotenv()
 PROJECT_ENDPOINT = os.environ["PROJECT_ENDPOINT"].rstrip("/")
 MODEL = os.environ["MODEL"]
 VOICE = os.getenv("VOICE", "alloy")
+INPUT_MODE = os.getenv("INPUT_MODE", "text").strip().lower()
 TEXT = os.getenv("TEXT", "").strip()
 TEXT_FILE = os.getenv("TEXT_FILE", "prompt.txt").strip()
+INPUT_AUDIO_FILE = os.getenv("INPUT_AUDIO_FILE", "input.wav").strip()
 OUTPUT_FILE = os.getenv("OUTPUT_FILE", "speech")
 
 
@@ -47,6 +49,20 @@ def input_text() -> str:
     )
 
 
+def input_audio() -> dict[str, object]:
+    audio_path = Path(INPUT_AUDIO_FILE)
+    if not audio_path.exists():
+        raise FileNotFoundError(f"Create '{INPUT_AUDIO_FILE}' before running audio mode.")
+
+    return {
+        "type": "input_audio",
+        "input_audio": {
+            "data": base64.b64encode(audio_path.read_bytes()).decode("ascii"),
+            "format": "wav",
+        },
+    }
+
+
 credential = DefaultAzureCredential()
 token_provider = get_bearer_token_provider(
     credential,
@@ -57,7 +73,31 @@ client = OpenAI(
     api_key=token_provider,
 )
 
-text = input_text()
+if INPUT_MODE not in {"text", "audio"}:
+    raise ValueError("INPUT_MODE must be either 'text' or 'audio'.")
+
+if INPUT_MODE == "text":
+    user_content = input_text()
+    system_instruction = (
+        "You are a text-to-speech engine. Read the user's text aloud "
+        "verbatim. Do not answer it, paraphrase it, or add any words."
+    )
+else:
+    user_content = [
+        {
+            "type": "text",
+            "text": (
+                "Listen to the attached WAV request, answer it helpfully, "
+                "and speak your answer aloud."
+            ),
+        },
+        input_audio(),
+    ]
+    system_instruction = (
+        "You are a voice assistant. Listen to the user's audio, understand "
+        "the request, and answer it concisely in spoken form."
+    )
+
 try:
     response = client.chat.completions.create(
         model=MODEL,
@@ -66,12 +106,9 @@ try:
         messages=[
             {
                 "role": "system",
-                "content": (
-                    "You are a text-to-speech engine. Read the user's text aloud "
-                    "verbatim. Do not answer it, paraphrase it, or add any words."
-                ),
+                "content": system_instruction,
             },
-            {"role": "user", "content": text},
+            {"role": "user", "content": user_content},
         ],
     )
 except APIStatusError as exc:
