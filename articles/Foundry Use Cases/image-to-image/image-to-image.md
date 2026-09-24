@@ -68,7 +68,7 @@ The source image is a classroom portrait. The edit prompt turns it into a high-c
 
 | SOURCE | RESULT |
 | --- | --- |
-| ![Source image](source.png) | ![Edited result](result.png) |
+| ![Source image](images/source.png) | ![Edited result](images/result.png) |
 
 The prompt used for this transformation was:
 
