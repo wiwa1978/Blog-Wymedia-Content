@@ -1,74 +1,97 @@
 ---
-title: "Image To Image"
-excerpt: "Image-to-image lets you take an existing picture and transform it with a text instruction — restyle a photo, swap a background, or turn a sketch into a polished illustration. With Microsoft Foundry this is a single call to the image editing endpoint: send your source image plus a prompt, get back an edited image."
+title: "Foundry use case: image to image"
+excerpt: "Transform an existing image with a text instruction using Microsoft Foundry, Python, Entra ID authentication, and the OpenAI-compatible image edits API."
 slug: foundry-use-cases/image-to-image
 articleId: e4ad8d43-d6a3-4075-83ba-90ca9087715f
 artifactPath: "Foundry Use Cases/image-to-image"
-tags: ["Microsoft Foundry", "Azure AI", "Python", "image generation"]
-series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":3}
-publishAt: "2026-09-26T15:25:00.000Z"
+tags: ["Microsoft Foundry", "Azure AI", "Python", "image editing"]
+series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":11}
+publishAt: "2026-09-26T14:48:00.000Z"
 ---
 # Getting Started: Image to Image with Microsoft Foundry
 
-Image-to-image lets you take an existing picture and transform it with a text instruction — restyle a photo, swap a background, or turn a sketch into a polished illustration. With Microsoft Foundry this is a single call to the image editing endpoint: send your source image plus a prompt, get back an edited image.
+Image-to-image generation starts with an existing picture and applies a text-directed transformation. It is useful for restyling photos, changing lighting, replacing backgrounds, and exploring design variations while preserving the parts of the source image that matter.
+
+With Microsoft Foundry, the sample sends the source image and prompt to an OpenAI-compatible image edits endpoint.
 
 ## What you need
 
-1. A **Foundry project** with an image-editing-capable model deployment (e.g. `gpt-image-1`).
-2. **Azure CLI login** (`az login`) with the *Azure AI User* role on the project — or any identity `DefaultAzureCredential` can pick up. No API keys to manage.
-3. Two Python packages:
+1. A **Foundry project** with a compatible image-edit deployment, such as `gpt-image-1`.
+2. A source image file, such as `source.png`.
+3. **Azure CLI login** (`az login`) with permission to use the project — or another identity supported by `DefaultAzureCredential`.
+4. The Python packages listed in [`code/requirements.txt`](code/requirements.txt):
 
 ```bash
-pip install openai azure-identity
+pip install -r code/requirements.txt
 ```
 
 ## The core idea
 
-Editing an image against a Foundry deployment boils down to four steps:
+An image edit has four pieces:
 
-1. **Authenticate** — get a token provider Foundry trusts.
-2. **Create an OpenAI client** — point the standard `openai` SDK's `base_url` at your Foundry endpoint instead of `api.openai.com`.
-3. **Call `images.edit`** — pass your source image file plus the instruction prompt.
-4. **Decode and save** — the response returns the edited image as base64; decode it to bytes and write it to a file.
+1. **Authenticate** with Entra ID and create an OpenAI client for the Foundry project route.
+2. **Open the source image** as binary input.
+3. **Send the image and instruction** with `images.edit`.
+4. **Decode and save** the base64 image returned by the model.
 
 ```python
-from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-from openai import OpenAI
-
-token_provider = get_bearer_token_provider(
-    DefaultAzureCredential(), "https://ai.azure.com/.default"
-)
-client = OpenAI(
-    base_url="https://<resource-name>.services.ai.azure.com/openai/v1",
-    api_key=token_provider,
-)
-with open("input.png", "rb") as source_image:
-    response = client.images.edit(
+with open("source.png", "rb") as source_image:
+    response = openai_client.images.edit(
         model="gpt-image-1",
         image=source_image,
-        prompt="Turn this into a vibrant, hand-drawn comic-book style illustration",
+        prompt="Transform this into a vibrant retro-futurist sci-fi movie poster. Preserve the person's face and pose, but use a cobalt-blue space suit, neon equations, saturated colors, and dramatic rim lighting.",
         size="1024x1024",
     )
 ```
 
-`response.data[0].b64_json` is your edited image, base64-encoded — decode it with `base64.b64decode(...)` and write the bytes to a `.png` file.
+The prompt should explain both the desired change and what must remain unchanged. For a visibly different result, make the transformation concrete: change the medium, palette, wardrobe, lighting, and setting while explicitly preserving identity and pose.
 
-## The full script
+## Configure and run it
 
-The attached [`image_to_image.py`](/articles/foundry-use-cases/image-to-image/code/image_to_image.py) wraps this into a runnable script: set your `ENDPOINT`, `MODEL`, and `PROMPT` at the top of the file, place a source image next to it (the script expects `input.png` by default), then run it.
+Copy [`code/.env.example`](code/.env.example) to `code/.env`, place the source image in the code directory, and set `PROJECT_ENDPOINT`, `MODEL`, `INPUT_FILE`, and `PROMPT`.
+
+`PROJECT_ENDPOINT` should be the project endpoint shown in Foundry:
+
+```text
+https://<resource-name>.services.ai.azure.com/api/projects/<project-name>
+```
+
+The script derives the OpenAI-compatible base URL as `https://<resource-name>.services.ai.azure.com/openai/v1` and calls `/images/edits`. The configured deployment must support image edits; an image-generation-only deployment will not work for this sample.
+
+For a short prompt, use `PROMPT` directly. For a longer prompt or one containing quotation marks, save it in a text file and set `PROMPT_FILE=prompt.txt` instead.
+
+The image-edit API accepts standard aspect-ratio sizes rather than arbitrary pixel dimensions. The script maps `WIDTH` and `HEIGHT` to `1024x1024`, `1536x1024`, or `1024x1536`.
+
+## Source and result
+
+The source image is a classroom portrait. The edit prompt turns it into a high-contrast retro-futurist science-fiction poster while keeping the subject recognizable.
+
+| SOURCE | RESULT |
+| --- | --- |
+| ![Source image](source.png) | ![Edited result](result.png) |
+
+The prompt used for this transformation was:
+
+```text
+Create an unmistakable dramatic transformation of the source image into a vibrant retro-futurist 1960s sci-fi movie poster. Keep the same central person, face, expression, hairstyle silhouette, and standing pose, but replace the brown suit with a glossy cobalt-blue space suit and bright orange tie. Turn the classroom chalkboard into a deep midnight-purple starfield with large glowing cyan and magenta equations, add bold rim lighting, saturated colors, halftone print texture, and a red planet visible behind the subject. Do not preserve the original muted watercolor look; make the transformation clearly visible while keeping the subject recognizable.
+```
+
+Run the sample from the article's `code` directory:
 
 ```bash
-python Code/image_to_image.py
+python image_to_image.py
 ```
 
+`OUTPUT_FILE` is treated as a base filename. The deployment name and timestamp are inserted before the extension, for example:
+
+```text
+Saved edited image to edited_image_gpt-image-1_20260924_164800.png
 ```
-Saved edited image to edited_image.png
-```
 
-## What we intentionally left out
+The attached [`image_to_image.py`](code/image_to_image.py) is the complete runnable sample and is available in the code modal for viewing or download.
 
-The production Image to Image use case in this repo adds several things on top of these fundamentals: file-type and size validation for uploaded images, model-capability checks, structured error handling for editing failures, conversation persistence, and telemetry. None of that changes the core mechanic shown above — it's still one call to `images.edit` with an image and a prompt. Once you're comfortable with this minimal version, swapping in a different source image or prompt is a small step from here.
+## Microsoft Learn resources
 
-## Try it yourself
-
-Open `Code/image_to_image.py`, set `ENDPOINT` and `MODEL` to your own Foundry project and image deployment, drop a sample image in as `input.png`, and run it — you'll have an edited PNG on disk in seconds.
+- [Azure AI Projects client library for Python](https://learn.microsoft.com/python/api/overview/azure/ai-projects-readme?view=azure-python) — authenticate with `AIProjectClient` and obtain an OpenAI-compatible client.
+- [Azure OpenAI image generation and editing](https://learn.microsoft.com/azure/ai-foundry/openai/dall-e-quickstart) — configure image generation and editing with Python.
+- [Azure OpenAI image generation models](https://learn.microsoft.com/azure/foundry/openai/how-to/dall-e) — review supported image-model operations and request formats.
