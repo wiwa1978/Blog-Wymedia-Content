@@ -1,5 +1,5 @@
 ---
-title: "Foundry use case: simple text chat"
+title: "Simple Text Chat"
 excerpt: "Build a small streaming text-chat application with Microsoft Foundry and Python. The sample uses a Foundry project endpoint, Entra ID authentication, and the OpenAI-compatible chat completions API."
 slug: foundry-use-cases/text-chat
 articleId: 546bcaae-c35f-4ff1-a0e9-8ebb9d209d05
