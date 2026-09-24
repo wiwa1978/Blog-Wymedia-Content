@@ -6,7 +6,7 @@ articleId: 4adf0b47-7184-402e-ab25-b44d547d38f5
 artifactPath: "Microsoft Foundry/part13-agent-insights"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents", "observability", "insights"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":13}
-publishAt: null
+publishAt: "2026-09-24T11:35:00.000Z"
 ---
 # Part 13 - Use Insights to find recurring agent problems
 
