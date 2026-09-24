@@ -5,8 +5,8 @@ slug: foundry-use-cases/text-to-speech
 articleId: 685b19d3-bd8a-4c25-9673-dfea3d152b0c
 artifactPath: "Foundry Use Cases/text-to-speech"
 tags: ["Microsoft Foundry", "Azure AI", "Python", "text to speech"]
-series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":4}
-publishAt: "2026-09-27T14:48:00.000Z"
+series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":3}
+publishAt: "2026-09-28T14:48:00.000Z"
 ---
 # Text to speech with Microsoft Foundry audio completions
 
@@ -112,6 +112,16 @@ Path(output_path).write_bytes(audio)
 ```
 
 The response contains audio data as base64. Decoding it produces the binary MP3 content that can be saved or streamed to an application.
+
+## Why not use `gpt-realtime` for this use case?
+
+`gpt-realtime` can generate spoken responses, but it is designed for ongoing, interactive conversations rather than straightforward text-to-speech. This use case already has the text it wants to vocalize and does not need interruption handling, voice activity detection, persistent session state, or telephony connectivity.
+
+Using `gpt-realtime` would therefore add unnecessary architectural complexity. A discrete audio completion—or a dedicated text-to-speech endpoint—better matches the one-way flow:
+
+> **Prepared text -> spoken audio**
+
+`gpt-realtime` is the better choice when the user must actively converse with the system. For this use case, `gpt-audio` is useful when the application needs an intelligent response delivered as speech, while a dedicated TTS endpoint may be simpler and more cost-effective when the requirement is only reliable, controllable speech synthesis.
 
 ## Choosing a voice and format
 
