@@ -2,6 +2,7 @@
 title: "Multi-Agent Orchestration"
 excerpt: "Create specialist Microsoft Foundry agents and coordinate them with handoffs, sequential workflows, and parallel reviews."
 slug: microsoft-foundry/part9-multi-agent-orchestration
+articleId: cb9100b4-53a9-4caa-ac46-67cde31a593c
 artifactPath: "Microsoft Foundry/part9-multi-agent-orchestration"
 tags: ["azure", "ai-foundry", "sdk", "python", "agents"]
 series: {"slug":"microsoft-foundry","title":"Microsoft Foundry","part":9}
