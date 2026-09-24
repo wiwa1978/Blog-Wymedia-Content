@@ -1,5 +1,5 @@
 ---
-title: "Microsoft Foundry SDK: Part 13 - Use Insights to find recurring agent problems"
+title: "Use Insights to find recurring agent problems"
 excerpt: "Insights in Foundry analyzes production agent traces and groups recurring behavior into reviewable Insights with evidence and a proposed fix. Run a scan in the portal, validate an Insight, and drive the same workflow from the Python SDK."
 slug: microsoft-foundry/part13-agent-insights
 articleId: 6535ce64-fcb2-4f18-a707-0de9a2f1b109
