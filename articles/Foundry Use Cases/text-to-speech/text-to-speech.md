@@ -6,7 +6,7 @@ articleId: 685b19d3-bd8a-4c25-9673-dfea3d152b0c
 artifactPath: "Foundry Use Cases/text-to-speech"
 tags: ["Microsoft Foundry", "Azure AI", "Python", "text to speech"]
 series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":4}
-publishAt: "2026-09-20T16:00:00.000Z"
+publishAt: "2026-09-27T16:00:00.000Z"
 ---
 # Text to speech with Microsoft Foundry audio completions
 
