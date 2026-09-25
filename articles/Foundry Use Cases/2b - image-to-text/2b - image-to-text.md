@@ -1,5 +1,5 @@
 ---
-title: "Image to text"
+title: "Image to Text"
 excerpt: "Analyze a local image and turn its visual content into a text description or answer using a vision-capable Microsoft Foundry model."
 slug: foundry-use-cases/image-to-text
 articleId: 8826e34e-e10b-4b5e-b29f-1c9761a09531
