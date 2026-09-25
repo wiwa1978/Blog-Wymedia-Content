@@ -1,12 +1,12 @@
 ---
-title: "Realtime voice from a WAV file"
+title: "Foundry use case: realtime voice from a WAV file"
 excerpt: "Send a prerecorded WAV file to a Microsoft Foundry realtime GPT deployment and save the spoken response as audio."
 slug: foundry-use-cases/realtime-voice-mp3
 articleId: bb6b5fb7-2673-4e18-8090-8bbef33bc344
 artifactPath: "Foundry Use Cases/realtime-voice-mp3"
 tags: ["Microsoft Foundry", "Azure AI", "Python", "realtime voice", "audio"]
 series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":5}
-publishAt: "2026-09-29T18:29:00.000Z"
+publishAt: "2026-09-28T14:48:00.000Z"
 ---
 # Getting Started: Testing Realtime Voice from a WAV File with Microsoft Foundry
 
