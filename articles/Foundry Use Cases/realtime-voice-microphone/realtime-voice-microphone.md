@@ -1,12 +1,12 @@
 ---
-title: "Realtime voice from a microphone"
+title: "Foundry use case: realtime voice from a microphone"
 excerpt: "Build a command-line voice assistant that captures microphone audio and plays responses from a Microsoft Foundry realtime GPT deployment."
 slug: foundry-use-cases/realtime-voice-microphone
 articleId: 2e51c9f4-2ef1-45bd-9de1-379d517ef4a2
 artifactPath: "Foundry Use Cases/realtime-voice-microphone"
 tags: ["Microsoft Foundry", "Azure AI", "Python", "realtime voice", "microphone"]
 series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":6}
-publishAt: "2026-09-30T18:30:00.000Z"
+publishAt: "2026-10-01T09:33:00.000Z"
 ---
 # Getting Started: Live Microphone Voice with Microsoft Foundry
 
