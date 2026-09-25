@@ -1,5 +1,5 @@
 ---
-title: "Foundry use case: audio transcription from a microphone"
+title: "Audio transcription from a microphone"
 excerpt: "Capture live microphone audio with Python, transcribe it through a Microsoft Foundry realtime deployment, and save the transcript to a text file."
 slug: foundry-use-cases/audio-transcription-microphone
 articleId: c6d04c49-91fa-4e24-87d5-4f1ee420fbff
