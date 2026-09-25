@@ -13,3 +13,5 @@ python .\transcribe_audio.py
 ```
 
 Set `INPUT_WAV` in `.env` to another 24 kHz, mono, 16-bit PCM WAV file if needed.
+
+The `openai[realtime]` dependency installs the WebSocket support required by `client.realtime.connect(...)`.

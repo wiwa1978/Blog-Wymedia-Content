@@ -6,7 +6,7 @@ articleId: f7cd1216-31f0-4e43-9eeb-1688ba37dc88
 artifactPath: "Foundry Use Cases/audio-transcription"
 tags: ["Microsoft Foundry", "Azure AI", "Python", "audio transcription", "realtime"]
 series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":7}
-publishAt: "2026-10-01T18:51:00.000Z"
+publishAt: "2026-10-02T09:33:00.000Z"
 ---
 # Getting Started: Audio Transcription with Microsoft Foundry
 
@@ -131,7 +131,26 @@ For long recordings, meeting archives, or call-center data, a dedicated batch tr
 
 ## WebSocket versus WebRTC
 
-This sample uses WebSocket because it is a Python CLI that explicitly controls the audio bytes and local playback. The connection is created with `client.realtime.connect(model=MODEL)`, and the application sends audio chunks and receives transcription events over that persistent connection.
+This sample uses **WebSocket**, not WebRTC, because it is a Python CLI that explicitly controls the audio bytes and local playback. WebSocket provides one persistent, bidirectional connection: the script sends audio chunks to Foundry and receives the transcription events on that same connection.
+
+The connection is created in `transcribe_audio.py` in two steps. First, the project HTTPS endpoint is converted to a secure WebSocket (`wss://`) endpoint when the client is configured:
+
+```python
+client = AsyncOpenAI(
+    websocket_base_url=websocket_base_url(PROJECT_ENDPOINT),
+    api_key=token_provider(),
+)
+```
+
+Then the Realtime session is opened:
+
+```python
+async with client.realtime.connect(model=MODEL) as connection:
+    await connection.input_audio_buffer.append(audio=encoded_chunk)
+    await connection.input_audio_buffer.commit()
+```
+
+The script sends each 100 ms WAV chunk with `input_audio_buffer.append`. After the complete file has been sent, `input_audio_buffer.commit` tells the service that the audio turn is complete. The completed transcription is received as the `conversation.item.input_audio_transcription.completed` event.
 
 WebRTC is usually a better transport for a browser or mobile application because it integrates naturally with media devices, permissions, and low-latency media transport. The model choice does not change: `gpt-realtime` is the session-oriented model, while WebSocket and WebRTC are two ways to connect to it.
 

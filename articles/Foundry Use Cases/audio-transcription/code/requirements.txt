@@ -1,4 +1,4 @@
 azure-identity
-openai
+openai[realtime]
 python-dotenv
 sounddevice
