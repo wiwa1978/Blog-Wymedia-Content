@@ -5,7 +5,7 @@ slug: foundry-use-cases/image-to-image
 articleId: 2c9c2caa-ac12-4b8c-9dc2-d435af08183a
 artifactPath: "Foundry Use Cases/image-to-image"
 tags: ["Microsoft Foundry", "Azure AI", "Python", "image editing"]
-series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":11}
+series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":4}
 publishAt: "2026-09-30T17:52:00.000Z"
 ---
 # Getting Started: Image to Image with Microsoft Foundry
