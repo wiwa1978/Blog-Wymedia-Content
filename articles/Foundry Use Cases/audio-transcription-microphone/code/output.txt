@@ -1,0 +1,136 @@
+There will be a custom built-in solution for your offline and local co-pilot usage, because a co-pilot currently is an online only service. I would start with that.
+To be honest, there is no road map to have something like Opal in the international law. I would start with that and I would make that very clear. Your answer is really good. I would put that in front of the customer and say direct applications are not achievable.
+and now I need the data synchronization. I think there, you mentioned data also, I wouldn't do that.
+말을..
+Don't go that way. I think you need to set up a data discovery tool that backs up your data, that restores your data. You have to set expectations that is not real time.
+and their solar complexities.
+But I think you did well, you can have data, you can synchronize, there is a question, I would mention it has been tested before, by the way, to get a mailbox that is empty online, it's 20 units in the reference case, to have it populated, it's a question of...
+how that things are. And there is a leaf.
+in that the way that data is, of course, not synchronized.
+Don't talk about data loss, I can see it in the eye of the beholder. The data is not lost, and the data is not sacralized.
+OK.
+Anything else? I have one more question. It's not really a piece of spike. You talked about a MPB or a minimal fireball. What you need to have in order to make your presence felt. Currently we have more and more customers that are really reliant on dynamic fireballs. It's not an aroma. I don't know.
+Teams is not on the roadmap neither, and we have to be quite clear, Teams is another discussion aspect of our team. So there's no one-to-one mapping, you cannot migrate so fast, and I think we have to be honest on this.
+You should not over-promise, it's super bad to over-promise on InterSystem 5. InterSystem 5, and you mentioned it rightfully, it is Exchange, SharePoint, and Skype for Business, and nothing more.
+is installed and integrated with, and it requires Android.
+And you have to say that as well, because the question was asking if it's high-profile or casual. That's also important.
+Products can be installed individually by a customer, but often in an integrated way. People are along with it. As a matter of fact, I told that small business service back in the day. It's more or less macro capabilities.
+Okay, thank you very much
+We're off to bed.
+
+
+Well, great. I made a great investment in my company. Now I have to trust you to provide more of this. Right, right. So then, what happens if Trump decides that my company can't provide services to me anymore?
+Your full organization you mean, or is it specific people, because usually they are more targeted to specific people, and that's full organizations. If that's the case, then unfortunately we'll need to comply with that setup. And the idea is that we try to give you a plethora of solutions to be able to cater for that. Obviously the first step we're going to do is try and fight back together with you, and that's also a contractual commitment that we have, is to try and fight back this type of request. In the contract, we have kind of a way to defend, let's say, the operational continuity of your, as a European citizen as well, and the European law. And the EU DBA.
+Существенное влияние как-то точно дано.
+Not that you have to know that, but you have to indicate where it is, you have to make it tangible, because it's not in the licensing contract, it's in the data protection.
+You're concerned, you see, that actually the sanction had been applied, so the next step is to do what you need to do. You have been sanctioned, you don't have access to online services, so we need to do something. I want to know about sanctions just to make sure that I don't have any type of sanctions. So, I think the first question is not to ask how do we do it, but when are we starting to do something about that. It's not when the sanction has happened, it's actually before. We need to think about what are the technical limitations way before the sanction is applied. So, we need to think about what architecture and what services need to resist to that aspect of online services. So, it's an architecture decision that starts way before. You have to ask yourself the question, what are the technical services that need to survive, and for that, as I've already said, there are different solutions. If some of your services are requiring this exigence, we have solutions like Ash Local, where we move your services from the cloud to your disconnected provider. In that case, there is no connection. So, the cloud is involved, it's on the on-site service, and we ensure that it is on the on-site service. Is it much safer to go to a European cloud provider than I don't have to worry about all these things?
+I mean, it's of course an option, so the choice is yours. What we provide in terms of Azure is a set of options that you can retain even in a normal operating condition, but you can also ensure a proper and fast exit to a technology that you already know. And again, there are options, and there is...
+with my effort. Can you help me with this architecture so that at all times of migration that we can... That's why we have a team of social specialists and unified contracts where we can actually build as much as we can and make sure that when we develop applications, if that's possible, if they need to migrate to Microsoft or to another cloud infrastructure, this can happen. So it really happens at the architecture and design decisions.
+Thank you. 
+But your chance out there, our goal is to provide you with options, even if you don't have access to online.
+
+I would like to add here the data act obligation that we also have in our contract, so we first have to facilitate that customers can read it as well, and we do that technically, but also contractually. And then I challenged a bit on the GameCloud provider, I think we should re-challenge that, saying that...
+Potentially, European drug providers will be affected by sanctions equally than we are.
+Yeah, exactly, yeah.
+So, I basically start with the Gardner report, because it states very clearly that in the contract of the OVH clouds and the StackITs, it basically says that when a customer is sanctioned, that it will follow the sanction and switch off the service.
+En zo is Microsoft niet meer aan het doen van iets, maar het is een probleem voor de hele IT-wereld.
+when they're already being hit by a sanction. So, that's what I think is important. Don't make it a Microsoft problem. Try to make it a broader problem. Not only target Microsoft, but look from this point of view. Do you have any experience with the timeline between the sanction and the pushback here? We have experienced a pushback of an hour, 24 hours, 7 days, 7 months? 3 months.
+No, I don't know if you can answer that, but certain sanctions are instant. Yeah, but if you want to fight the sanctions and you go to court, that's not working in one hour. So how much time does a customer have to, if they're sanctioned, work on the architecture? The EU, the evidence in emergency cases will force Microsoft to be able to wrap in eight hours.
+in our city.
+So is it an agreement for us to make sure that all customers have a normal Christmas? Yeah, it's been made before.
+If you don't prepare it, if you don't synchronize your data, it's not on premise.
+She is not ready to fail over.
+It's weeks, give or take.
+By the way, before you did it, you had to set the probability. Exactly, there is the risk assessment so important. It's not realistic to do it for all applications in the entire environment. It's a risk assessment for critical applications. If you can't survive or you have to, then you need to set up a more stringent PCR solution. Remember my squadrant? Sanctions are super high on impact and super low on probability. That's a risk case. Well, it seems to me we've always come to the same discussion about this.
+
+no access to one side. Why don't we have a package where the answer to that is to buy this package? It contains high throughput, it contains, I don't know how many trials of machine learning. In some sense, this is the cost. If you are serious, it is. So we made one proposal to Betfix, and they didn't take it, so we propose it to somebody else. Is that we can work with them, we find the architecture for the minimum viable bank, or minimum viable insurance company. But the thing is, they need to be clients first, from a functional perspective. From a technical perspective, what does it mean in your life? So it's not a package, it's just a package. I see, but can we have a kind of... That's ongoing, and I think we have, do you want to add something to that? Because we are very serious about that, and for us, it shouldn't be a public sector decision.
+Even if it does not exist, then the first step is to have a...
+I mean, you're always looking at it from a point of view.
+Microsoft put sanctions for me, so that's why I put me like Swift.
+That's what I said, make it a product problem, don't focus on a Microsoft problem, try to make it a European industry problem, because it is, in reality.
+And in a way also a customer problem, they are sanctions. Yes, Microsoft has to comply, but all other companies also must comply and sanction them. Do we have examples where a company or even virtual was sanctioned? Yeah, but these are worldwide global sanctions. That's a different story, that's a different approach that I'll be talking about here. And Microsoft complies with these trade sanctions. We have no choice. Again, Microsoft operates in law, lawful, every company where we do business. And there's a worldwide agreement that there are trade sanctions effective against Russia and everybody has to follow.
+There's no discussion on this.
+But if he, Dell, Lenovo will not be allowed to sell Azure Local in Russia anymore.
+Yeah. Awesome.
+That's what they are.
+They're not real. It's a China hardware.
+Okay, so it's not so heavy, so even if it was supposed to be heavy, it's not so heavy.
+Skilavarefn lenningar, við þvíum við veryllar ja að byggja að byrju kakt!
+You need to test them both ways, fail to match local, and fail back. Okay, thank you very much, I think we see again how difficult these questions are.
+We have another report here.
+To ni bila tvoja vprašanja? Ne, ne, ne.
+Should we continue and play a bit of Ocarina of Time? It's been so long. Yes. Just play a bit.
+OK.
+So, if you hit a boundary, it gives me...
+Kiitos!
+Does that mean that from a support perspective you have all the people that have all the knowledge about all your products in Europe?
+Phew. So. Yes. Yes. Yes. Yes. Yes. May I ask where this question is coming from?
+I don't want non-European people to touch my support tickets.
+I would say there are a few different levels how Microsoft addresses this based on the current state of the customer.
+your current estate, and also the different disabilities. EU Data Boundary covers where the data resides, as you said. So for operational sovereignty, we have different flavors. One of them is data guardian, which essentially means that you can already enable this within your organization, and it means that for every single support case that you create, when you have an assigned engineer, even worldwide, we have a supervisor in Europe that is gonna approve the access to your data or to your environment as required. Support engineer will place the request onto the supervisor, it will get approved, and supervisor will be supervising in the right way and logging in everything that the engineer is doing. So it provides additional transparency and traceability, and you have all the logs for additional audits afterwards.
+And how do I enable it?
+You can enable this within your Android talent, but I suggest we schedule a separate session with one of our cloud solution architects to go through the setup.
+The answer is partially right. I think the fundamental principles are right. Data gardening is enabled. It's not a customer action.
+That's super important, so for European customers, they don't see credit in your card, they don't know about debit card until you tell them.
+and that's what you did, so that's good. But there's no configuration, there's no intervention to be done.
+They will have support offerings, and I'm looking at Philippe's shirt, what is it? Unified Assured, which is a little bit more expensive, but at least you can have support out of the EU, 24-7, by the way, and obviously there are certain cases that will require PG attention, and then you can ask the customer politely, can we move this case to the EU.
+I would take that question and I'll share the whitepaper, how we run the cloud, so our support engineer has no standing access.
+We run with zero stopping access, we give just the time and just enough access to a support engineer by default. That would explain the measures we take by default, because otherwise people would say before did our government have no protection? No. 
+So we work on a secure admin workstation, support engineer gets a ticket, he needs to request access, that access is approved, that is logged,
+These log files are stored without the reach of the customer, of the engineer. The engineer gets limited access from a rights perspective, from a time perspective. He cannot do what was not on the original request of this access request. An access request will expire after two or four hours automatically and he has again zero standing access. And that is, I think, something that is super important. Engineers have no access to customer data unless there is a reason to have access support.
+That is the first thing. The second thing that we will do now is that we hired hundreds, probably, we don't disclose that, but engineers.
+that are based in Europe.
+and that will take tickets from European customers. They will still use a secure admin workstation. They have no access, but then they come in a case and they cannot solve the case. Because that was my question. We globally develop our software.
+and we don't develop products, we develop features. We have more security competence in Israel, we have quantum computing competence in Denmark, we have business applications in Denmark. It is something that is globally developed. So if that global engineer sees that he cannot solve the problem, then he will call DataGuardian. But there's something before that. The customer can.
+Invoke Customer Lockbox. Ik zal Customer Lockbox noemen. Customer Lockbox biedt aan de klant in de support ticket die hij initieert om te co-approven.
+You don't have to mention this, I didn't have a chance. I didn't either.
+En daar komt het uiteindelijk in.
+Yeter kardeşim, neyse uğranıyor neyimiz?
+What we don't yet do is to provide the log files, which customers get through Customer Reports today, that they get the log file, we'll provide an immutable log file.
+Það begynnast að hampaüregjandu og sekura ar veimumni nok en þef um algænt. Náttúru sem þinu betur að LaBagøn það grísast istakann, og þið tavluði emdi og kald inn á elgjörindröð um annars að það signára að eru lípin veginnu jaginn.
+Ne potrebite dowadati tako. Hajde, komentirajte nas, če se predstavi sistem.
+Dat nummer is er nog, maar dat is niet meer beschikbaar door de Sovereignty Control Plan.
+तारे से मक्यों खेल नहीं।
+That is why we are looking now for customers to start evaluating the software control panel and to look at customers that have that privileged support already. Because the tech guardian doesn't block or prevent anything, it's just kind of making it transparent. And it's a customer presence issue.
+But again, I want to make it broader and to start, what we already do, make sure that I think you know what we do with zero scanning access, what we do with log blocks, that it can be augmented to custom log blocks, and data writing is on top of all that.
+or something that they need to... No, I'm not going to say anything about it.
+Wat was dat hiervoor? Dat is niet vergeten, is het?
+Kerststof in de lockbox is? Kerststof in de lockbox, ja. Lockbox is in de tuin.
+I'm an engineer, I send a support request, I need to log a logbox request as a support engineer internally. I got that request from a customer, it is an exchange online problem, I need to get access to exchange online for that person. That's internal logbox.
+en dan word ik geapproveerd voor 2 of 4 uur. Ik krijg conditionele toegang, want dat is ook toegevoegd. En ik kan alleen werken op het exchange-online, want dat is wat ik aanvraagde tijdens de timeframe, en ik krijg de rechten om te doen wat ik wil. Dat is interne logboxing. Dus de klant loopt ons niet verder, zodat hij ons kan helpen? Ja, precies. En als de klant dat doet, en hij loopt zijn CVTA-ticket op vrijdagavond om vier uur, en hij loopt naar het weekend,
+But it's not supposed to SFA them because they need to be available for a survey. But indeed, yeah, it's a problem because the notebox needs to have an approval and nobody's going to do it.
+They may want a lockbox, but at least we have one by us, how does it work in a group? Now the customer has to co-approve them. They have to co-approve them. And if they are not available to co-approve, our engineers cannot do their job. And they ask for it in their support list.
+Yes, and it's an E5 feature, if I remember correctly. Thank you. Thank you.
+Okay, Alice, I think we have the most interesting part of the session still to come.
+You want to use my laptop or your laptop?
+between Robert Cook's. Yes, is the President of the Grandity Foundation. Can you show him what it does? The college even offers science programs. Uh, you can go out and interview, if you stay out and at the channel like our fellow Ma Yukiza. You're missed out as
+Så vi skal nægge at holde til at tage en ny virkus. Så vi skal holde til at tage en ny virkus. Så vi har lige et sted.
+Wir starten zum Zweiten.
+But that's not the goal, I think you've already seen, we have somebody who is very knowledgeable, privacy, compliance, European regulations practice.
+If you don't believe me, ask a lawyer, so take a look. Thank you so much, Frank. Thank you, Yasemin, as well, for an everyday experience, for listening to all of your internal anxieties as well.
+because I'm sure what you guys think, because we advise, we read laws every day, we get companies inside. It's key to address, and so hopefully I'll give you a little bit of a flavor of what other companies do, what we advise on, and please interrupt me, ask questions. I'm an attorney, so the likelihood of my agency it depends is very high. Bear with me, and also as much as you know information that I've shared on you guys' tech AI staff or models, I am not a Microsoft expert, so please say no, this is not a feature, this is not a model, this is not AI power. Interrupt me as you go.
+Um...
+So I'm going to focus on two topics today, I'm going to do my best to make it within our time frame. First of all, I'm going to touch upon one topic that is everywhere, obviously, but I'm going to bore you guys with a little bit of the legal stuff from the Artificial Intelligence Act that I hope you guys know, maybe you've read it, maybe you've read all the different agnesses, maybe you've had fun playing around with the different websites. I definitely recommend playing with interactive versions of the law so you can go from one version to the other, and how this is useful for you guys to your own understanding, to address customer questions, and also, I want to say trust your instinct on what is AI and how to address it and how to help your customers.
+And then we'll go into a second topic as well, where I'm going to touch a bit more on what Frank has mentioned.
+Today for milk, I'm going to try to provide a different perspective.
+So.
+I know we've just seen that you guys handle customer questions on a daily basis. Maybe just as a show of hands, do you guys have specific questions on AI-backed compliance from customers?
+Or, you know...
+legal stuff, or is it more general, like, what does Microsoft do to comply with the law, right, this is super broad, but do you have anything on AI Act compliance?
+Just a general question that we get is, is the AI Act prohibitive to prevent AI services? I love that you're asking this because I'm going to try and make this fun by sharing a few myths, right, about the AI Act. And this is my favorite one, so this is where we go into that in a second.
+So, maybe just in that, is anyone else? Yes? Yeah, maybe there are some exceptions for new institutions. Yeah, yeah. Interesting. Okay, interesting. I'd love that too. We're going to go outside in a second. Anyone else have a specific customer question or like...
+Hello, my expert friend, are you going to come in?
+I think they often ask the providers, will you comply with the EYI Act, without really thinking of it as being a shared responsibility, where they also need to understand their use cases, what they're going to do with it and so on, so that's a difficult question sometimes to answer, it's like, often it depends, we're going to try, but it's hard to answer.
+You approved it. Thank you very much. Thank you. Thank you. Thank you, I appreciate you doing this.
+He's always there for the older guys, he's just not that soft.
+That's why I was born here.
+Love it. Thank you. I'm going to try to address those questions as we go. But that gives me a little bit of the temperature in the room. So let's dive in. And I hope I'm going to be able to give you guys the slides. This is to provide some other information. I won't go into each bullet point. But so you can see here the scope of the AI Act. And I think we can already address a few more. I missed part of your question. So the AI Act is a EU regulation directly applicable throughout all of the EU member states. And so a company that falls in the scope of the law and keeps it in place, like there's no natural directive or consolidation. It regulates the development, marketing, and use of AI. So that's the whole AI lifecycle. It's someone designing it, it's someone putting the device to work, and all those are applicable to that lifecycle. I want to flag here that not every super interesting technology falls within the scope of AI system or AI model. So that's a very complex first step in your assessment where re-attorneys come in. We try to put the technical aspects and capabilities underneath them with the legal stuff. So maybe that's not your business. But maybe you have a customer that says, is this AI? Or is this not AI? So that's one question that might come up. And this is going to be going technical.
+First myth, right, is the AI Act just banning artificial intelligence. You hear people say, we're killing innovation in Europe. We don't have access to individual tools. This is not true. So we're here debunking the first AI myth. AI Act allows AI to be designed, marketed, deployed under specific conditions based on the risks that it can present to society, to individuals, to people. And I think as citizens or individuals, that kind of makes sense. It's only set on really harmful AI practices that are banned. So AI is not just outright banned. We'll see in a second the technical examples of a ban. There's been some thinking through what can be banned. And there's also updates. That's the beauty of Europe, how we monitor developments. You've seen last summer the AI unification apps, right? No one wants their kids to be subject to those. European Commission came in and said this is going to be prohibited under the AI Act. So that's our first myth. So that's my first question.
+Second myth that I wanted to mention is it only applies to EU based companies. I know you guys work mostly with EU based customers.
+This is really important.
+We are a U.S.-based law firm, and I wanted to give you a side of it. Because of that, I also feel some of the frustration that you guys may have as key employees of the companies in Belgium working for U.S. companies. So I just wanted to point out that the AI Act has this beautiful extraterritorial approach of EU tech regulation playbook. It applies as of the moment that the AI tool is marketed on the EU market and is being used and generates output. So this is where all of our friends in the U.S. or China or wherever developing AI tools, they're not, they have no headquarters in Europe, they might still follow this good AI. So think about our friends or partners or service providers, our whole supply chain. And this goes into our second topic and everything that Frank just said related to data sovereignty. So don't think the AI Act only applies to U.S. companies.
+
+Or second myth, right? Who's in scope? It's only the company designing the tool. I'm a Microsoft customer. I purchased a license to use something. I don't know how the tool was built. I don't have the engineers. I'm just activating it. I don't know anything to do with it. This is not correct. As we can see with the whole EU tech stack as well, EMOL also imposes obligations on the company that decides to use it, right? That's the beauty of all your own models and techs. I don't pretend I know all of it, right? But you have customers that are able to customize your own features, right? And you integrate different features from third parties, right? I've seen big MyEyes bubbles, right? You can see stuff coming in from Andropic. You have different tools. You have third-party features integrated into this, right? Everybody that is involved in this and making it useful for your end users has their own responsibility as well. If you have a customer that comes in and says, I'm not responsible. I don't have anything to do with this. This is your own co-pilot thing. I just use it. They're a company. They're subject to their own requirements as well. That's what we have here. We'll see in a second how those obligations reflect in real life.
+Just one word as well. Enforcing AI Act. We'll see the timeline in a second. But we have obviously a variety of EU regulators and experts, people giving advice, people monitoring what's going on with AI. But we also have our local regulators, so think of those. And they can enforce AI Act as well, as part of the whole platform of other digital laws that it's so fun to navigate through.
+I think we have another myth, it's about all the customers are not subject to it.
+So we do have exclusions, I've heard a lot of you while we're in contempt of some of these stuff and regulations in the United States, right? That's just your own personal sovereignty. But then you have explicit exclusions. So for one, I'm not necessarily.
