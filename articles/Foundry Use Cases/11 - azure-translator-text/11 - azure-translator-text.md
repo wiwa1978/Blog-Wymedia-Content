@@ -5,7 +5,7 @@ slug: foundry-use-cases/azure-translator-text
 articleId: 28d12876-6b8d-49fc-b27b-b37e30572fa9
 artifactPath: "Foundry Use Cases/11 - azure-translator-text"
 tags: ["Microsoft Foundry", "Azure Translator", "Python", "translation"]
-series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":20}
+series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":11}
 publishAt: "2026-10-05T16:16:00.000Z"
 ---
 # Getting Started: Translate Text with Azure Translator in Microsoft Foundry
