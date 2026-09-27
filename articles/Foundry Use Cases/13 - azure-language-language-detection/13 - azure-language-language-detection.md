@@ -5,8 +5,8 @@ slug: foundry-use-cases/azure-language-language-detection
 articleId: c066986a-3f95-48c2-9e3f-a45ae9556796
 artifactPath: "Foundry Use Cases/13 - azure-language-language-detection"
 tags: ["Microsoft Foundry", "Azure Language", "Python", "language detection"]
-series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":12}
-publishAt: null
+series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":13}
+publishAt: "2026-09-27T16:21:00.000Z"
 ---
 # Getting Started: Detect Text Language with Azure Language in Microsoft Foundry
 
