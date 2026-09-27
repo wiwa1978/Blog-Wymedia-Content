@@ -1,0 +1,1 @@
+Hello! This video was generated from a short script with Azure Speech text to speech avatar.
