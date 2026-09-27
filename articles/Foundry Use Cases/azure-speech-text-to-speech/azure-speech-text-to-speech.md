@@ -5,7 +5,7 @@ slug: foundry-use-cases/azure-speech-text-to-speech
 articleId: 747087d4-cc0a-4be4-816f-7f0417735577
 artifactPath: "Foundry Use Cases/azure-speech-text-to-speech"
 tags: ["Microsoft Foundry", "Azure Speech", "Python", "text to speech", "SSML"]
-series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":14}
+series: {"slug":"foundry-use-cases","title":"Microsoft Foundry - Use Cases","part":15}
 publishAt: "2026-10-08T16:25:00.000Z"
 ---
 # Getting Started: Text to Speech with Azure Speech in Microsoft Foundry
