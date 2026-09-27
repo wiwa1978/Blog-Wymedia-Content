@@ -1,0 +1,1 @@
+Hello! This is a short text-to-speech example using Azure Speech in Microsoft Foundry.
